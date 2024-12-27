@@ -1,21 +1,12 @@
-<p align="center">
-	<a href="https://github.com/Fantasy0521/Fantasy-Blog/tree/master" target="_blank">
-		<img src="./Fantasy-Blog.png" alt="Fantasy-Blog logo" 
-      style="width: 500px; height: 250px">
-	</a>
-</p>
-<p align="center">
-	<img src="https://img.shields.io/badge/JDK-1.8+-orange">
-	<img src="https://img.shields.io/badge/SpringBoot-2.7.9-brightgreen">
-	<img src="https://img.shields.io/badge/mybatis--plus-3.4.3-yellowgreen">
-	<img src="https://img.shields.io/badge/Vue-2.6.11-brightgreen">
-</p>
+# Fantasy-Games
+
 
 
 ## 简介
 
-项目主要对开源项目 https://github.com/Naccl/NBlog 后端进行学习并重构
-项目已部署上线,欢迎访问http://106.14.45.117:8080/home (第一次加载会比较慢)
+基于springboot的智能游戏资源系统
+
+ [Fantasy0521/Fantasy-Games: 基于springboot的智能游戏资源系统 (github.com)](https://github.com/Fantasy0521/Fantasy-Games)
 
 ## 后端
 
@@ -41,7 +32,5 @@
 6. 分别在`blog-cms`和`blog-view`目录下执行`npm run serve`启动前后台页面
 7. 如果需要在Linux环境下部署项目,需要修改配置文件active为linux,并且修改前端代码的请求地址为Linux下的ip
 
-## 致谢
 
-感谢 [Naccl](https://github.com/Naccl) 提供的开源项目
 
