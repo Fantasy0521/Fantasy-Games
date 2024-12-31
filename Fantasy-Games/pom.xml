@@ -67,16 +67,16 @@
 <!--            <artifactId>mybatis-plus-generator</artifactId>-->
 <!--            <version>3.5.1</version>-->
 <!--        </dependency>-->
-        <!--可以选择加入的日志依赖-->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-        </dependency>
 <!--        <dependency>-->
 <!--            <groupId>org.apache.velocity</groupId>-->
 <!--            <artifactId>velocity</artifactId>-->
 <!--            <version>1.7</version>-->
 <!--        </dependency>-->
+        <!--可以选择加入的日志依赖-->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
 
         <!-- Markdown 转 HTML -->
         <dependency>
