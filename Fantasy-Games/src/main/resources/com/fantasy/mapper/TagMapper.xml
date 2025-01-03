@@ -13,6 +13,13 @@
         where bt.tag_id = t.id and bt.blog_id = #{blogId}
     </select>
 
+    <select id="getTagListByGameId" resultMap="tag">
+        select t.id,t.tag_name,t.color
+        from game_tag bt
+        left join tag t on bt.tag_id = t.id
+        where  bt.game_id = #{gameId}
+    </select>
+
     <resultMap id="tagBlogCount" type="com.fantasy.model.vo.TagBlogCount">
         <id property="id" column="tag_id"/>
         <result property="value" column="blog_count"/>

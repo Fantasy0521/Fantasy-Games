@@ -2,4 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fantasy.mapper.GameMapper">
 
+    <select id="getGameInfoListByCategoryNameAndIsPublished" resultType="com.fantasy.entity.Game">
+        select * from game
+        left join category on game.category_id = category.id
+        <where>
+            category_name= #{categoryName}
+            <if test="keyword != null">
+                and game.name like concat('%',#{keyword},'%')
+            </if>
+        </where>
+    </select>
+
 </mapper>

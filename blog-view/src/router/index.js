@@ -11,6 +11,7 @@ import Moments from "@/views/moments/Moments";
 import Friends from "@/views/friends/Friends";
 import About from "@/views/about/About";
 import Login from "@/views/Login";
+import Game from "@/views/Game/game";
 
 Vue.use(VueRouter)
 
@@ -65,6 +66,14 @@ const routes = [
 				component: Category,
 				meta: {
 					title: '分类'
+				}
+			},
+			{
+				path: '/game/:games',
+				name: 'game',
+				component: Game,
+				meta: {
+					title: '游戏库'
 				}
 			},
 			{

@@ -2,7 +2,10 @@ package com.fantasy.mapper;
 
 import com.fantasy.entity.Game;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.fantasy.model.vo.BlogInfo;
 import org.apache.ibatis.annotations.Mapper;
+
+import java.util.List;
 
 /**
  * <p>
@@ -15,4 +18,5 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface GameMapper extends BaseMapper<Game> {
 
+    List<Game> getGameInfoListByCategoryNameAndIsPublished(String categoryName,String keyword);
 }

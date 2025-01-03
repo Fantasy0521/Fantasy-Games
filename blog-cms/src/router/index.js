@@ -36,7 +36,7 @@ const routes = [
 		name: 'Blog',
 		redirect: '/blog/write',
 		component: Layout,
-		meta: {title: '博客管理', icon: 'el-icon-menu'},
+		meta: {title: '数据管理', icon: 'el-icon-menu'},
 		children: [
 			{
 				path: 'write',
@@ -69,6 +69,25 @@ const routes = [
 				name: 'BlogList',
 				component: () => import('@/views/blog/blog/BlogList'),
 				meta: {title: '文章管理', icon: 'el-icon-s-order'}
+			},
+			{
+				path: 'game/list',
+				name: 'GameList',
+				component: () => import('@/views/blog/game/GameList'),
+				meta: {title: '游戏管理', icon: 'el-icon-s-order'}
+			},
+			{
+				path: 'game/write',
+				name: 'WriteGame',
+				component: () => import('@/views/blog/game/WriteGame'),
+				meta: {title: '编辑游戏', icon: 'el-icon-edit'}
+			},
+			{
+				path: 'game/edit/:id',
+				name: 'EditGame',
+				component: () => import('@/views/blog/game/WriteGame'),
+				meta: {title: '编辑游戏', icon: 'el-icon-edit'},
+				hidden: true
 			},
 			{
 				path: 'moment/list',

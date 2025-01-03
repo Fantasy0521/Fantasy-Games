@@ -16,6 +16,10 @@
 				type: Function,
 				required: true
 			},
+      getGameList: {
+				type: Function,
+				required: true
+			},
 			totalPage: {
 				type: Number,
 				required: true
@@ -50,6 +54,7 @@
 				}
 				this.pageNum = newPage
 				this.getBlogList(newPage)
+				this.getGameList(newPage)
 			},
 		}
 	}

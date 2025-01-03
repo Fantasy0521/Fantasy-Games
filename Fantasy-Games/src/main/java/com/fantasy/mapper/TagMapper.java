@@ -27,5 +27,7 @@ public interface TagMapper extends BaseMapper<Tag> {
      */
     List<Tag> getTagListById(Long blogId);
 
+    List<Tag> getTagListByGameId(Long gameId);
+
     List<TagBlogCount> getTagBlogCount();
 }

@@ -15,6 +15,15 @@
 					<el-dropdown-item :command="category.name" v-for="(category,index) in categoryList" :key="index">{{ category.name }}</el-dropdown-item>
 				</el-dropdown-menu>
 			</el-dropdown>
+
+			<el-dropdown trigger="click" @command="gameRoute">
+				<span class="el-dropdown-link item" :class="{'m-mobile-hide': mobileHide,'active':$route.name==='game'}">
+					<i class="idea icon"></i>游戏库<i class="caret down icon"></i>
+				</span>
+				<el-dropdown-menu slot="dropdown">
+					<el-dropdown-item :command="category.name" v-for="(category,index) in categoryList" :key="index">{{ category.name }}</el-dropdown-item>
+				</el-dropdown-menu>
+			</el-dropdown>
 			<router-link to="/archives" class="item" :class="{'m-mobile-hide': mobileHide,'active':$route.name==='archives'}">
 				<i class="clone icon"></i>归档
 			</router-link>
@@ -110,6 +119,9 @@
 			},
 			categoryRoute(name) {
 				this.$router.push(`/category/${name}`)
+			},
+			gameRoute(name) {
+				this.$router.push(`/game/${name}`)
 			},
 			debounceQuery(queryString, callback) {
 				this.timer && clearTimeout(this.timer)
