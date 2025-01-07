@@ -71,6 +71,7 @@ export default {
 		let form = {...rootState.commentForm}
 		form.page = rootState.commentQuery.page
 		form.blogId = rootState.commentQuery.blogId
+		form.gameId = rootState.commentQuery.gameId
 		form.parentCommentId = rootState.parentCommentId
 		submitComment(token, form).then(res => {
 			if (res.code === 200) {

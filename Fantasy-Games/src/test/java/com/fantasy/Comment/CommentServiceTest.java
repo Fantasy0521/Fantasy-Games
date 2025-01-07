@@ -15,7 +15,7 @@ public class CommentServiceTest {
 
     @Test
     void testGetCommentsList(){
-        commentService.getCommentsList(0,3L,1,10);
+        commentService.getCommentsList(0,3L,null,1,10);
     }
 
 }

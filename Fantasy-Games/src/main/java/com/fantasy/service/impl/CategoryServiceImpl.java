@@ -1,15 +1,14 @@
 package com.fantasy.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.fantasy.entity.Category;
 import com.fantasy.entity.Category;
 import com.fantasy.entity.Tag;
 import com.fantasy.mapper.BlogMapper;
 import com.fantasy.mapper.CategoryMapper;
 import com.fantasy.model.Result.PageResult;
 import com.fantasy.model.vo.CategoryBlogCount;
-import com.fantasy.model.vo.PageComment;
-import com.fantasy.model.vo.TagBlogCount;
-import com.fantasy.service.IBlogService;
 import com.fantasy.service.ICategoryService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,5 +76,24 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
         map.put("legend", legend);
         map.put("series", series);
         return map;
+    }
+
+    @Override
+    public PageResult<Category> getAllCategoriesByPage(Integer pageNum, Integer pageSize) {
+        //1 构建分页对象
+        Page<Category> pageInfo = new Page<>(pageNum, pageSize);
+
+        //2 创建LambdaQueryWrapper
+        LambdaQueryWrapper<Category> queryWrapper = new LambdaQueryWrapper<>();
+
+        //4 开始分页查询
+        Page<Category> categoryPage = this.page(pageInfo, queryWrapper);
+
+
+        //6 封装为前端规定的PageResult
+        // 此处getPages需要加一
+        PageResult<Category> result = new PageResult<>((int) categoryPage.getPages() + 1, categoryPage.getRecords());
+
+        return result;
     }
 }

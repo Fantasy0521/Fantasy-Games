@@ -39,13 +39,21 @@ public class GameController {
      * @return
      */
     @GetMapping("category")
-    @ApiOperation(value = "查看分类",notes = "1")
+    @ApiOperation(value = "查看游戏分类",notes = "1")
     public Result category(@RequestParam String categoryName,
                            @RequestParam(required = false) String keyword,
                            @RequestParam(defaultValue = "1") Integer pageNum,@RequestParam(defaultValue = "5") Integer pageSize) {
         PageResult<Game> pageResult = gameService.getGameInfoListByCategoryNameAndIsPublished(categoryName,keyword, pageNum,pageSize);
         return Result.ok("请求成功", pageResult);
     }
+
+    @GetMapping
+    @ApiOperation(value = "查看游戏详情",notes = "2")
+    public Result getGameById(@RequestParam Long id){
+        GameInfo gameById = gameService.getGameById(id);
+        return Result.ok("获取游戏详情信息成功",gameById);
+    }
+
 
 
 

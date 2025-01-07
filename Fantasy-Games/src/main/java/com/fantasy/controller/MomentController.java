@@ -37,8 +37,8 @@ public class MomentController {
      * @return
      */
     @GetMapping("moments")
-    public Result moments(@RequestParam(defaultValue = "1") Integer pageNum){
-        PageResult<Moment> pageResult = momentService.getMomentsByPage(pageNum);
+    public Result moments(@RequestParam(defaultValue = "1") Integer pageNum,@RequestParam(defaultValue = "3") Integer pageSize){
+        PageResult<Moment> pageResult = momentService.getMomentsByPage(pageNum, pageSize);
         return Result.ok(pageResult);
     }
 

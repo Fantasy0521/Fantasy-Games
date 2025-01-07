@@ -1,5 +1,6 @@
 package com.fantasy.mapper;
 
+import com.fantasy.entity.BlogTag;
 import com.fantasy.entity.Tag;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.fantasy.model.vo.TagBlogCount;
@@ -30,4 +31,8 @@ public interface TagMapper extends BaseMapper<Tag> {
     List<Tag> getTagListByGameId(Long gameId);
 
     List<TagBlogCount> getTagBlogCount();
+
+    void saveGameTag(BlogTag gameTags);
+
+    void deleteGameTagsByGameId(Long gameId);
 }

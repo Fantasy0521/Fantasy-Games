@@ -12,7 +12,7 @@ export function getDataByQuery(queryInfo) {
 
 export function deleteGameById(id) {
 	return axios({
-		url: 'game',
+		url: 'fantasy/game',
 		method: 'DELETE',
 		params: {
 			id
@@ -22,14 +22,14 @@ export function deleteGameById(id) {
 
 export function getCategoryAndTag() {
 	return axios({
-		url: 'categoryAndTag',
+		url: 'fantasy/game/categoryAndTag',
 		method: 'GET'
 	})
 }
 
 export function saveGame(game) {
 	return axios({
-		url: 'game',
+		url: 'fantasy/game',
 		method: 'POST',
 		data: {
 			...game
@@ -39,7 +39,7 @@ export function saveGame(game) {
 
 export function updateTop(id, top) {
 	return axios({
-		url: 'game/top',
+		url: 'fantasy/game/top',
 		method: 'PUT',
 		params: {
 			id,
@@ -50,7 +50,7 @@ export function updateTop(id, top) {
 
 export function updateRecommend(id, recommend) {
 	return axios({
-		url: 'game/recommend',
+		url: 'fantasy/game/recommend',
 		method: 'PUT',
 		params: {
 			id,
@@ -61,7 +61,7 @@ export function updateRecommend(id, recommend) {
 
 export function updateVisibility(id, form) {
 	return axios({
-		url: `game/${id}/visibility`,
+		url: `fantasy/game/${id}/visibility`,
 		method: 'PUT',
 		data: {
 			...form
@@ -71,7 +71,7 @@ export function updateVisibility(id, form) {
 
 export function getGameById(id) {
 	return axios({
-		url: 'game',
+		url: 'fantasy/game',
 		method: 'GET',
 		params: {
 			id
@@ -81,7 +81,7 @@ export function getGameById(id) {
 
 export function updateGame(game) {
 	return axios({
-		url: 'game',
+		url: 'fantasy/game',
 		method: 'PUT',
 		data: {
 			...game

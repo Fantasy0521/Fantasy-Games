@@ -12,6 +12,7 @@ import Friends from "@/views/friends/Friends";
 import About from "@/views/about/About";
 import Login from "@/views/Login";
 import Game from "@/views/Game/game";
+import GameDetail from "@/views/Game/GameDetail";
 
 Vue.use(VueRouter)
 
@@ -50,6 +51,14 @@ const routes = [
 				component: Blog,
 				meta: {
 					title: '博客'
+				}
+			},
+			{
+				path: '/gameDetail/:id',
+				name: 'gameDetail',
+				component: GameDetail,
+				meta: {
+					title: '游戏'
 				}
 			},
 			{

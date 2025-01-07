@@ -41,9 +41,10 @@ public class CommentAdminController {
     @GetMapping("/comments")
     public Result comments(@RequestParam(required = false) Integer page,
                            @RequestParam(required = false) Long blogId,
+                           @RequestParam(required = false) Long gameId,
                            @RequestParam(defaultValue = "1") Integer pageNum,
                            @RequestParam(defaultValue = "10") Integer pageSize) {
-        PageResult<PageComment> commentsList = commentService.getCommentsList(page, blogId, pageNum, pageSize);
+        PageResult<PageComment> commentsList = commentService.getCommentsList(page, blogId,  gameId, pageNum, pageSize);
         PageInfo<PageComment> pageInfo = new PageInfo<>();
         pageInfo.setTotal(commentsList.getTotalPage());
         pageInfo.setList(commentsList.getList());

@@ -20,5 +20,6 @@ public interface ICategoryService extends IService<Category> {
 
 
     Map<String, List> getCategoryBlogCountMap();
-    
+
+    PageResult<Category> getAllCategoriesByPage(Integer pageNum, Integer pageSize);
 }

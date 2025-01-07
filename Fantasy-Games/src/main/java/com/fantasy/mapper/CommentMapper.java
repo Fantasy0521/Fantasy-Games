@@ -18,5 +18,5 @@ import java.util.List;
 @Mapper
 public interface CommentMapper extends BaseMapper<Comment> {
 
-    List<PageComment> getPageCommentListByPageAndParentCommentId(Integer page, Long blogId, Long parentCommentId);
+    List<PageComment> getPageCommentListByPageAndParentCommentId(Integer page, Long blogId, Long gameId, Long parentCommentId);
 }

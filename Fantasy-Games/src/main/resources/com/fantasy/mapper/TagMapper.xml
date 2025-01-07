@@ -8,6 +8,14 @@
         <result property="color" column="color"/>
     </resultMap>
 
+    <insert id="saveGameTag">
+        insert into game_tag(game_id,tag_id) values (#{blogId},#{tagId})
+    </insert>
+
+    <delete id="deleteGameTagsByGameId">
+        delete from game_tag where game_id = #{gameId}
+    </delete>
+
     <select id="getTagListById" resultMap="tag">
         select t.id,t.tag_name,t.color from blog_tag bt,tag t
         where bt.tag_id = t.id and bt.blog_id = #{blogId}

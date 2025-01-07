@@ -41,6 +41,11 @@ public class GameInfo {
     private LocalDateTime publishDate;
 
     /**
+     * 发行日期
+     */
+    private String publishDateString;
+
+    /**
      * 系列
      */
     private String series;

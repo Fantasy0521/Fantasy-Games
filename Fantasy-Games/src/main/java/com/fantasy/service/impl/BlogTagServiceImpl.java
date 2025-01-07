@@ -76,4 +76,16 @@ public class BlogTagServiceImpl extends ServiceImpl<BlogTagMapper, BlogTag> impl
         map.put("series", series);
         return map;
     }
+
+    @Override
+    public void saveGameTag(List<BlogTag> gameTags) {
+        for (BlogTag gameTag : gameTags) {
+            tagMapper.saveGameTag(gameTag);
+        }
+    }
+
+    @Override
+    public void deleteGameTags(Long gameId) {
+        tagMapper.deleteGameTagsByGameId(gameId);
+    }
 }

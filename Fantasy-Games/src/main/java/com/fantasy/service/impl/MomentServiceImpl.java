@@ -25,8 +25,8 @@ import java.util.List;
 public class MomentServiceImpl extends ServiceImpl<MomentMapper, Moment> implements IMomentService {
 
     @Override
-    public PageResult<Moment> getMomentsByPage(Integer pageNum) {
-        PageHelper.startPage(pageNum,3);
+    public PageResult<Moment> getMomentsByPage(Integer pageNum,Integer pageSize) {
+        PageHelper.startPage(pageNum,pageSize);
         LambdaQueryWrapper<Moment> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(Moment::getIsPublished,true).orderByDesc(Moment::getCreateTime);
         List<Moment> list = this.list();

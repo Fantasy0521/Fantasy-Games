@@ -20,4 +20,15 @@ public interface IGameService extends IService<Game> {
     PageResult<GameInfo> getAllGamesByPage(Integer pageNum, Integer pageSize);
 
     GameInfo getGameById(Long id);
+
+    void saveGame(GameInfo gameInfo);
+
+    void updateGame(GameInfo gameInfo);
+
+    void deleteGame(Long id);
+
+    void updateGameTopById(Long id, Boolean top);
+
+    void updateGameRecommendById(Long id, Boolean recommend);
+
 }

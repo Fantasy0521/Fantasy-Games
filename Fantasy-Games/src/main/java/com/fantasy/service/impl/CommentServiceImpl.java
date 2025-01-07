@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fantasy.entity.Blog;
 import com.fantasy.entity.BlogTag;
 import com.fantasy.entity.Comment;
+import com.fantasy.entity.Game;
 import com.fantasy.exception.BizException;
 import com.fantasy.mapper.CommentMapper;
 import com.fantasy.model.Result.PageResult;
@@ -12,6 +13,7 @@ import com.fantasy.model.Result.Result;
 import com.fantasy.model.vo.PageComment;
 import com.fantasy.service.ICommentService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.fantasy.service.IGameService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.ibatis.exceptions.PersistenceException;
@@ -40,6 +42,9 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
     @Autowired
     private BlogServiceImpl blogService;
 
+    @Autowired
+    private IGameService gameService;
+
     //记录总评论数
     private int totalComment;
 
@@ -57,22 +62,33 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
      * @return
      */
     @Override
-    public PageResult<PageComment> getCommentsList(Integer page, Long blogId, Integer pageNum, Integer pageSize) {
+    public PageResult<PageComment> getCommentsList(Integer page, Long blogId, Long gameId, Integer pageNum, Integer pageSize) {
         //使用PageHelper 注意要从此处开始分页,已经查询出结果后再进行分页无效
         PageHelper.startPage(pageNum, pageSize);
         //1 获取所有评论列表
-        List<PageComment> comments = getPageCommentListByPageAndParentCommentId(page, blogId, -1L);
+        List<PageComment> comments = getPageCommentListByPageAndParentCommentId(page, blogId,gameId, -1L);
         //此时已经把所有子评论都已经递归查出
         // 把所有子评论以及子评论的子评论统一放入ReplyComments 页面只做了两层显示 1父1子 即把孙子也当为子
         int totalChild = 0;
         for (PageComment c : comments) {
             List<PageComment> tmpComments = new ArrayList<>();
             getReplyComments(tmpComments, c.getReplyComments());
-            Blog blog = blogService.getById(c.getBlogId());
-            c.setBlog(blog);
+            if (c.getBlogId() != null) {
+                Blog blog = blogService.getById(c.getBlogId());
+                c.setBlog(blog);
+            }
+            if (c.getGameId() != null) {
+                Game game = gameService.getById(c.getGameId());
+                c.setGame(game);
+            }
+
             for (PageComment tmpComment : tmpComments) {
-                blog = blogService.getById(tmpComment.getBlogId());
-                tmpComment.setBlog(blog);
+                if (tmpComment.getBlogId() != null) {
+                    tmpComment.setBlog(blogService.getById(tmpComment.getBlogId()));
+                }
+                if (tmpComment.getGameId() != null) {
+                    tmpComment.setGame(gameService.getById(tmpComment.getGameId()));
+                }
             }
             totalChild += tmpComments.size();
             c.setReplyComments(tmpComments);
@@ -96,13 +112,13 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
      * @param parentCommentId
      * @return
      */
-    private List<PageComment> getPageCommentListByPageAndParentCommentId(Integer page, Long blogId, Long parentCommentId) {
+    private List<PageComment> getPageCommentListByPageAndParentCommentId(Integer page, Long blogId, Long gameId, Long parentCommentId) {
         //1 以parentCommentId作为条件,查询此节点下的子节点
-        List<PageComment> comments = commentMapper.getPageCommentListByPageAndParentCommentId(page, blogId, parentCommentId);
+        List<PageComment> comments = commentMapper.getPageCommentListByPageAndParentCommentId(page, blogId, gameId, parentCommentId);
         //2 对子节点依次遍历查询出其子节点
         for (PageComment c : comments) {
             //3 此时把patentCommentId设为自己的Id,对其子节点在进行查询,实现递归
-            List<PageComment> replyComments = getPageCommentListByPageAndParentCommentId(page, blogId, c.getId());
+            List<PageComment> replyComments = getPageCommentListByPageAndParentCommentId(page, blogId, gameId, c.getId());
             //5 当开始设置子节点的时候已经遍历到叶子结点了,本轮递归结束
             c.setReplyComments(replyComments);
         }

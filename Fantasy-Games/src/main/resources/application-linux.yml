@@ -22,3 +22,6 @@ download: # 文件下载地址
 linuxImg: # linux 下的图片存放路径
   url: /usr/local/java/fantasy-blog/upload/
 
+fileUpload:
+  uploadUrl: http://106.14.45.117:8055/common/upload
+  downloadUrl: http://106.14.45.117:8055/common/download?name=

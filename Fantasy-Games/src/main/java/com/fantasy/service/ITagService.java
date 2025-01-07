@@ -2,6 +2,7 @@ package com.fantasy.service;
 
 import com.fantasy.entity.Tag;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.fantasy.model.Result.PageResult;
 
 /**
  * <p>
@@ -13,4 +14,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ITagService extends IService<Tag> {
 
+    PageResult<Tag> getAllTagsByPage(Integer pageNum, Integer pageSize);
 }

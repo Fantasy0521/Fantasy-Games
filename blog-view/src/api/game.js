@@ -11,3 +11,16 @@ export function getGameListByCategoryName(categoryName,keyword, pageNum) {
 		}
 	})
 }
+
+export function getGameById(token, id) {
+	return axios({
+		url: 'fantasy/game',
+		method: 'GET',
+		headers: {
+			Authorization: token,
+		},
+		params: {
+			id
+		}
+	})
+}

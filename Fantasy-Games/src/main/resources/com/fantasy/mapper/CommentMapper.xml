@@ -13,6 +13,7 @@
         <result property="parentCommentId" column="parent_comment_id"/>
         <result property="parentCommentNickname" column="parent_comment_nickname"/>
         <result property="blogId" column="blog_id"/>
+        <result property="gameId" column="game_id"/>
     </resultMap>
 
     <!--查询页面展示的评论List-->
@@ -37,8 +38,11 @@
             <if test="page!=null">
                 page = #{page}
             </if>
-            <if test="page==0 or blogId!=null">
+            <if test="(page==0 or blogId!=null) and gameId == null">
                 and blog_id=#{blogId}
+            </if>
+            <if test="(page==0 or gameId!=null) and blogId == null">
+                and game_id=#{gameId}
             </if>
             and parent_comment_id=#{parentCommentId}
             and is_published=true

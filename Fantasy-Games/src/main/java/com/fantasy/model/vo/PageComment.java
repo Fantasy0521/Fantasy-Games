@@ -1,6 +1,7 @@
 package com.fantasy.model.vo;
 
 import com.fantasy.entity.Blog;
+import com.fantasy.entity.Game;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -30,7 +31,9 @@ public class PageComment {
 	private String parentCommentId;//父评论id
 	private String parentCommentNickname;//父评论昵称
 	private Long blogId;
+	private Long gameId;
 
 	private Blog blog;//所属的博客
+	private Game game;//所属的游戏
 	private List<PageComment> replyComments = new ArrayList<>();//回复该评论的评论
 }

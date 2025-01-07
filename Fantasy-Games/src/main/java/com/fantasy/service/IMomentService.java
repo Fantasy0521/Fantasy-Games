@@ -14,5 +14,5 @@ import com.fantasy.model.Result.PageResult;
  */
 public interface IMomentService extends IService<Moment> {
 
-    PageResult<Moment> getMomentsByPage(Integer pageNum);
+    PageResult<Moment> getMomentsByPage(Integer pageNum,Integer pageSize);
 }

@@ -8,6 +8,7 @@
 						<el-option :label="item.name" :value="item.id" v-for="item in categoryList" :key="item.id"></el-option>
 					</el-select>
 					<el-button slot="append" icon="el-icon-search" @click="search"></el-button>
+					<el-button slot="append" icon="el-icon-plus" @click="addGame">添加游戏</el-button>
 				</el-input>
 			</el-col>
 		</el-row>
@@ -150,6 +151,9 @@
 				this.queryInfo.pageSize = 10
 				this.getData()
 			},
+      addGame() {
+        this.$router.push(`/blog/game/write/`)
+      },
 			//切换博客置顶状态
 			blogTopChanged(row) {
 				updateTop(row.id, row.top).then(res => {

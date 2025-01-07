@@ -17,5 +17,8 @@ import java.util.Map;
 public interface IBlogTagService extends IService<BlogTag> {
 
     Map<String, List> getTagBlogCountMap();
-    
+
+    void saveGameTag(List<BlogTag> gameTags);
+
+    void deleteGameTags(Long gameId);
 }

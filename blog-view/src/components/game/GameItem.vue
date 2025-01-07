@@ -59,7 +59,9 @@
 </template>
 
 <script>
-	export default {
+	import router from "@/router";
+
+  export default {
 		name: "GameItem",
 		props: {
 			gameList: {
@@ -74,7 +76,7 @@
     },
 		methods: {
 			toBlog(blog) {
-				this.$store.dispatch('goBlogPage', blog)
+        router.push(`/gameDetail/${blog.id}`)
 			}
 		}
 	}

@@ -81,6 +81,9 @@ public class Comment implements Serializable {
      */
     private Long blogId;
 
+    private Long gameId;
+
+
     /**
      * 父评论id，-1为根评论
      */

@@ -8,6 +8,7 @@ import {
 	RESTORE_COMMENT_FORM,
 	SET_COMMENT_QUERY_PAGE,
 	SET_COMMENT_QUERY_BLOG_ID,
+	SET_COMMENT_QUERY_GAME_ID,
 	SET_IS_BLOG_RENDER_COMPLETE,
 	SET_BLOG_PASSWORD_DIALOG_VISIBLE,
 	SET_BLOG_PASSWORD_FORM,
@@ -34,6 +35,9 @@ export default {
 	},
 	[SET_COMMENT_QUERY_BLOG_ID](state, blogId) {
 		state.commentQuery.blogId = blogId
+	},
+	[SET_COMMENT_QUERY_GAME_ID](state, gameId) {
+		state.commentQuery.gameId = gameId
 	},
 	[SET_COMMENT_QUERY_PAGE_NUM](state, pageNum) {
 		state.commentQuery.pageNum = pageNum

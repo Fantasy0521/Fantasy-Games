@@ -43,12 +43,13 @@ public class CommentController {
     @GetMapping("comments")
     public Result getComments(@RequestParam(defaultValue = "0") Integer page,
                               @RequestParam(defaultValue = "") Long blogId,
+                              @RequestParam(defaultValue = "") Long gameId,
                               @RequestParam(defaultValue = "1") Integer pageNum,
                               @RequestParam(defaultValue = "5") Integer pageSize){
 
         //1 查询所有评论
         //此处传入-1 代表为从根节点开始查询,即查询所有评论
-        PageResult<PageComment> pageInfo =  commentService.getCommentsList(page,blogId,pageNum,pageSize);
+        PageResult<PageComment> pageInfo =  commentService.getCommentsList(page,blogId,gameId,pageNum,pageSize);
 
         //2 查询该页面所有评论的数量
         Integer allComment = commentService.getTotalComment();
