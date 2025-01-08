@@ -59,4 +59,12 @@ public class VisitLogServiceImpl extends ServiceImpl<VisitLogMapper, VisitLog> i
     @Override
     public List<VisitLog> getVisitLogListByUUIDAndDate(String uuid, String startDate, String endDate) {
         return visitLogMapper.getVisitLogListByUUIDAndDate(uuid, startDate, endDate);    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void deleteVisitLogById(Long id) {
+        if (visitLogMapper.deleteVisitLogById(id) != 1) {
+            throw new PersistenceException("删除日志失败");
+        }
+    }
 }

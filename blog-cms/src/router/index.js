@@ -115,54 +115,54 @@ const routes = [
 			},
 		]
 	},
-	{
-		path: '/page',
-		name: 'Page',
-		redirect: '/page/site',
-		component: Layout,
-		meta: {title: '页面管理', icon: 'el-icon-document-copy'},
-		children: [
-			{
-				path: 'site',
-				name: 'SiteSetting',
-				component: () => import('@/views/page/SiteSetting'),
-				meta: {title: '站点设置', icon: 'bianjizhandian'}
-			},
-			{
-				path: 'friend',
-				name: 'FriendList',
-				component: () => import('@/views/page/FriendList'),
-				meta: {title: '友链管理', icon: 'friend'}
-			},
-			{
-				path: 'about',
-				name: 'About',
-				component: () => import('@/views/page/About'),
-				meta: {title: '关于我', icon: 'el-icon-tickets'}
-			},
-		]
-	},
-	{
-		path: '/pictureHosting',
-		name: 'PictureHosting',
-		redirect: '/pictureHosting/setting',
-		component: Layout,
-		meta: {title: '图床管理', icon: 'el-icon-picture'},
-		children: [
-			{
-				path: 'setting',
-				name: 'Setting',
-				component: () => import('@/views/pictureHosting/Setting'),
-				meta: {title: '配置', icon: 'el-icon-setting'}
-			},
-			{
-				path: 'manage',
-				name: 'Manage',
-				component: () => import('@/views/pictureHosting/Manage'),
-				meta: {title: '管理', icon: 'el-icon-folder-opened'}
-			},
-		]
-	},
+	// {
+	// 	path: '/page',
+	// 	name: 'Page',
+	// 	redirect: '/page/site',
+	// 	component: Layout,
+	// 	meta: {title: '页面管理', icon: 'el-icon-document-copy'},
+	// 	children: [
+	// 		{
+	// 			path: 'site',
+	// 			name: 'SiteSetting',
+	// 			component: () => import('@/views/page/SiteSetting'),
+	// 			meta: {title: '站点设置', icon: 'bianjizhandian'}
+	// 		},
+	// 		{
+	// 			path: 'friend',
+	// 			name: 'FriendList',
+	// 			component: () => import('@/views/page/FriendList'),
+	// 			meta: {title: '友链管理', icon: 'friend'}
+	// 		},
+	// 		{
+	// 			path: 'about',
+	// 			name: 'About',
+	// 			component: () => import('@/views/page/About'),
+	// 			meta: {title: '关于我', icon: 'el-icon-tickets'}
+	// 		},
+	// 	]
+	// },
+	// {
+	// 	path: '/pictureHosting',
+	// 	name: 'PictureHosting',
+	// 	redirect: '/pictureHosting/setting',
+	// 	component: Layout,
+	// 	meta: {title: '图床管理', icon: 'el-icon-picture'},
+	// 	children: [
+	// 		{
+	// 			path: 'setting',
+	// 			name: 'Setting',
+	// 			component: () => import('@/views/pictureHosting/Setting'),
+	// 			meta: {title: '配置', icon: 'el-icon-setting'}
+	// 		},
+	// 		{
+	// 			path: 'manage',
+	// 			name: 'Manage',
+	// 			component: () => import('@/views/pictureHosting/Manage'),
+	// 			meta: {title: '管理', icon: 'el-icon-folder-opened'}
+	// 		},
+	// 	]
+	// },
 	{
 		path: '/system',
 		name: 'System',
@@ -191,18 +191,18 @@ const routes = [
 				component: () => import('@/views/log/ScheduleJobLog'),
 				meta: {title: '任务日志', icon: 'el-icon-alarm-clock'}
 			},
-			{
-				path: 'login',
-				name: 'LoginLog',
-				component: () => import('@/views/log/LoginLog'),
-				meta: {title: '登录日志', icon: 'el-icon-finished'}
-			},
-			{
-				path: 'operation',
-				name: 'OperationLog',
-				component: () => import('@/views/log/OperationLog'),
-				meta: {title: '操作日志', icon: 'el-icon-document-checked'}
-			},
+			// {
+			// 	path: 'login',
+			// 	name: 'LoginLog',
+			// 	component: () => import('@/views/log/LoginLog'),
+			// 	meta: {title: '登录日志', icon: 'el-icon-finished'}
+			// },
+			// {
+			// 	path: 'operation',
+			// 	name: 'OperationLog',
+			// 	component: () => import('@/views/log/OperationLog'),
+			// 	meta: {title: '操作日志', icon: 'el-icon-document-checked'}
+			// },
 			{
 				path: 'exception',
 				name: 'ExceptionLog',

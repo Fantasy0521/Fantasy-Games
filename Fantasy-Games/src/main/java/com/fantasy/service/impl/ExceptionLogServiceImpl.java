@@ -7,10 +7,12 @@ import com.fantasy.service.IExceptionLogService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fantasy.util.IpAddressUtils;
 import com.fantasy.util.UserAgentUtils;
+import org.apache.ibatis.exceptions.PersistenceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -26,6 +28,9 @@ public class ExceptionLogServiceImpl extends ServiceImpl<ExceptionLogMapper, Exc
 
     @Autowired
     UserAgentUtils userAgentUtils;
+
+    @Autowired
+    ExceptionLogMapper exceptionLogMapper;
     
     /**
      * 异步记录异常信息
@@ -44,6 +49,21 @@ public class ExceptionLogServiceImpl extends ServiceImpl<ExceptionLogMapper, Exc
         log.setOs(os);
         if (!this.save(log)) {
             throw new RuntimeException(new BizException("日志添加失败"));
+        }
+    }
+
+
+
+    @Override
+    public List<ExceptionLog> getExceptionLogListByDate(String startDate, String endDate) {
+        return exceptionLogMapper.getExceptionLogListByDate(startDate, endDate);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void deleteExceptionLogById(Long id) {
+        if (exceptionLogMapper.deleteExceptionLogById(id) != 1) {
+            throw new PersistenceException("删除日志失败");
         }
     }
     

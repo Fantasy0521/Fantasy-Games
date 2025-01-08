@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.fantasy.entity.Visitor;
 import com.fantasy.exception.BizException;
 import com.fantasy.mapper.VisitorMapper;
+import com.fantasy.model.dto.VisitLogUuidTime;
 import com.fantasy.service.IVisitorService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fantasy.util.IpAddressUtils;
@@ -29,6 +30,11 @@ public class VisitorServiceImpl extends ServiceImpl<VisitorMapper, Visitor> impl
 
     @Autowired
     private UserAgentUtils userAgentUtils;
+
+    @Autowired
+    VisitorMapper visitorMapper;
+//    @Autowired
+//    RedisService redisService;
     
     /**
      * 判断是否存在该uuid
@@ -66,5 +72,37 @@ public class VisitorServiceImpl extends ServiceImpl<VisitorMapper, Visitor> impl
             throw new RuntimeException(new BizException("访客添加失败"));
         }
         
+    }
+
+
+    @Override
+    public List<Visitor> getVisitorListByDate(String startDate, String endDate) {
+        return visitorMapper.getVisitorListByDate(startDate, endDate);
+    }
+
+    @Override
+    public List<String> getNewVisitorIpSourceByYesterday() {
+        return visitorMapper.getNewVisitorIpSourceByYesterday();
+    }
+
+//    @Override
+//    public boolean hasUUID(String uuid) {
+//        return visitorMapper.hasUUID(uuid) != 0;
+//    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void updatePVAndLastTimeByUUID(VisitLogUuidTime dto) {
+        visitorMapper.updatePVAndLastTimeByUUID(dto);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void deleteVisitor(Long id, String uuid) {
+        //删除Redis中该访客的uuid
+//        redisService.deleteValueBySet(RedisKeyConstants.IDENTIFICATION_SET, uuid);
+        if (visitorMapper.deleteVisitorById(id) != 1) {
+            throw new PersistenceException("删除访客失败");
+        }
     }
 }

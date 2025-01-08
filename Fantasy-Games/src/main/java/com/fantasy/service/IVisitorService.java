@@ -2,7 +2,10 @@ package com.fantasy.service;
 
 import com.fantasy.entity.Visitor;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.fantasy.model.dto.VisitLogUuidTime;
 import org.springframework.scheduling.annotation.Async;
+
+import java.util.List;
 
 /**
  * <p>
@@ -18,4 +21,14 @@ public interface IVisitorService extends IService<Visitor> {
 
     @Async
     void saveVisitor(Visitor visitor);
+
+    List<Visitor> getVisitorListByDate(String startDate, String endDate);
+
+    void updatePVAndLastTimeByUUID(VisitLogUuidTime dto);
+
+    void deleteVisitor(Long id, String uuid);
+
+    List<String> getNewVisitorIpSourceByYesterday();
+
+
 }

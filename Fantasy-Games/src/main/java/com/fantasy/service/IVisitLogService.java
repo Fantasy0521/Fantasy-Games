@@ -22,4 +22,6 @@ public interface IVisitLogService extends IService<VisitLog> {
     int countVisitLogByToday();
 
     List<VisitLog> getVisitLogListByUUIDAndDate(String uuid, String startDate, String endDate);
+
+    void deleteVisitLogById(Long id);
 }
