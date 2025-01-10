@@ -9,7 +9,7 @@
 
 <script>
 	import GameItem from "./GameItem.vue";
-	import Pagination from "../blog/Pagination";
+	import Pagination from "./Pagination";
 
 	export default {
 		name: "GameList",

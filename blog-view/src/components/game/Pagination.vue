@@ -53,8 +53,8 @@
 					this.scrollToTop()
 				}
 				this.pageNum = newPage
-				this.getBlogList(newPage)
-				// this.getGameList(newPage)
+				// this.getBlogList(newPage)
+				this.getGameList(newPage)
 			},
 		}
 	}

@@ -174,6 +174,11 @@ public class GameServiceImpl extends ServiceImpl<GameMapper, Game> implements IG
         this.update(updateWrapper);
     }
 
+    @Override
+    public List<Game> getGamesByKeyWords(List<Keyword> keywords) {
+        return gameMapper.getGamesByKeyWords(keywords);
+    }
+
     private void handlerDate(GameInfo gameInfo,Game game){
         String publishDateString = gameInfo.getPublishDateString();
         if (!StringUtils.isEmpty(publishDateString)) {

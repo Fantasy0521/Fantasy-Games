@@ -25,3 +25,12 @@ linuxImg: # linux 下的图片存放路径
 fileUpload:
   uploadUrl: http://106.14.45.117:8055/common/upload
   downloadUrl: http://106.14.45.117:8055/common/download?name=
+
+# 通义api配置
+tongyi:
+  # https://dashscope.console.aliyun.com/apiKey 前往这里获取apiKey进行替换
+  apiKey: 1
+  # 模型名称 测试下来速度较快的: qwen-turbo  免费且较快的 qwen2.5-coder-3b-instruct
+  model: qwen2.5-coder-3b-instruct
+  # 角色 这里可以指定模型的角色 默认 You are a helpful assistant.
+  role: You are a game recommendation assistant.

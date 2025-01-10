@@ -13,4 +13,19 @@
         </where>
     </select>
 
+    <select id="getGamesByKeyWords" resultType="com.fantasy.entity.Game">
+        select * from game
+        where
+            name in
+            <foreach collection="keywords" item="item" separator="," open="(" close=")">
+                #{item.content}
+            </foreach>
+           or
+            <foreach collection="keywords" item="item" separator=" or " open="(" close=")">
+                description like concat('%',#{item.content},'%')
+            </foreach>
+        order by
+            is_top desc,is_recommend desc,stars desc,views desc
+    </select>
+
 </mapper>

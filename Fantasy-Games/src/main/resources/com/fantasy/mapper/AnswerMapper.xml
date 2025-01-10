@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fantasy.mapper.AnswerMapper">
+
+    <select id="getAnswersByKeyWords" resultType="com.fantasy.entity.Answer">
+        select a.*
+        from answer a
+        left join answer_keyword ak
+        on a.id = ak.answer_id
+        where
+            ak.keyword_id in
+            <foreach collection="keywords" item="item" open="(" separator="," close=")">
+                #{item.id}
+            </foreach>
+        order by a.recommend_score desc
+    </select>
+
+</mapper>
