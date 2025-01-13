@@ -1,8 +1,11 @@
 package com.fantasy.service;
 
+import com.fantasy.entity.Keyword;
 import com.fantasy.entity.Tag;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.fantasy.model.Result.PageResult;
+
+import java.util.List;
 
 /**
  * <p>
@@ -15,4 +18,7 @@ import com.fantasy.model.Result.PageResult;
 public interface ITagService extends IService<Tag> {
 
     PageResult<Tag> getAllTagsByPage(Integer pageNum, Integer pageSize);
+
+    List<Tag> getTagsByKeyWords(List<Keyword> keywords);
+
 }

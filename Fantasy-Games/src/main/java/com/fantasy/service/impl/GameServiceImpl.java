@@ -175,8 +175,8 @@ public class GameServiceImpl extends ServiceImpl<GameMapper, Game> implements IG
     }
 
     @Override
-    public List<Game> getGamesByKeyWords(List<Keyword> keywords) {
-        return gameMapper.getGamesByKeyWords(keywords);
+    public List<Game> getGamesByKeyWords(List<Keyword> keywords, List<Category> categories, List<Tag> tags) {
+        return gameMapper.getGamesByKeyWords(keywords,categories,tags);
     }
 
     private void handlerDate(GameInfo gameInfo,Game game){

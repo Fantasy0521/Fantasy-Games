@@ -31,7 +31,7 @@
 						<SvgIcon icon-class="article" class-name="card-panel-icon"/>
 					</div>
 					<div class="card-panel-description">
-						<div class="card-panel-text">文章数</div>
+						<div class="card-panel-text">帖子数</div>
 						<span class="card-panel-num">{{ blogCount }}</span>
 					</div>
 				</el-card>
@@ -97,7 +97,7 @@
 				visitRecordEcharts: null,
 				categoryOption: {
 					title: {
-						text: '分类下文章数量',
+						text: '分类下帖子数量',
 						x: 'center'
 					},
 					tooltip: {
@@ -111,7 +111,7 @@
 					},
 					series: [
 						{
-							name: '文章数量',
+							name: '帖子数量',
 							type: 'pie',
 							radius: [30, 110],
 							roseType: 'area',
@@ -121,7 +121,7 @@
 				},
 				tagOption: {
 					title: {
-						text: '标签下文章数量',
+						text: '标签下帖子数量',
 						x: 'center'
 					},
 					tooltip: {
@@ -135,7 +135,7 @@
 					},
 					series: [
 						{
-							name: '文章数量',
+							name: '帖子数量',
 							top: '-10%',
 							type: 'pie',
 							radius: [30, 110],

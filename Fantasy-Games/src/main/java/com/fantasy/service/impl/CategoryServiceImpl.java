@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fantasy.entity.Category;
 import com.fantasy.entity.Category;
+import com.fantasy.entity.Keyword;
 import com.fantasy.entity.Tag;
 import com.fantasy.mapper.BlogMapper;
 import com.fantasy.mapper.CategoryMapper;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -32,6 +34,9 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
 
     @Autowired
     private BlogMapper blogMapper;
+
+    @Autowired
+    private CategoryMapper categoryMapper;
     
     @Override
     public Map<String, List> getCategoryBlogCountMap() {
@@ -95,5 +100,10 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
         PageResult<Category> result = new PageResult<>((int) categoryPage.getPages() + 1, categoryPage.getRecords());
 
         return result;
+    }
+
+    @Override
+    public List<Category> getCateGoryByKeyWords(List<Keyword> keywords) {
+        return categoryMapper.getCategoryByKeyWords(keywords);
     }
 }

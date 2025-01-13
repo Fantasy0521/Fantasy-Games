@@ -18,7 +18,7 @@
         <mavon-editor v-model="form.description"/>
       </el-form-item>
 
-      <!--			<el-form-item label="文章正文" prop="content">-->
+      <!--			<el-form-item label="帖子正文" prop="content">-->
       <!--				<mavon-editor v-model="form.content" @imgAdd="imgAdd"/>-->
       <!--			</el-form-item>-->
 

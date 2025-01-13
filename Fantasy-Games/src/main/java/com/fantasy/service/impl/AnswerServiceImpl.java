@@ -27,17 +27,17 @@ public class AnswerServiceImpl extends ServiceImpl<AnswerMapper, Answer> impleme
 
     @Override
     public Answer getAnswerByQuestionId(Long id) {
-        List<Answer> list = list(new LambdaQueryWrapper<Answer>().eq(Answer::getQuestionId, id).orderBy(true,false, Answer::getFinalScore));
+        List<Answer> list = list(new LambdaQueryWrapper<Answer>().eq(Answer::getQuestionId, id).gt(Answer::getAcceptanceCount,0).orderBy(true,false, Answer::getFinalScore));
         //计算最终分值
-        if (list != null) {
+        if (!list.isEmpty()) {
             return list.get(0);
         }
         return null;
     }
 
     @Override
-    public List<Answer> getAnswersByKeyWords(List<Keyword> keywords) {
-        return answerMapper.getAnswersByKeyWords(keywords);
+    public List<Answer> getAnswersByKeyWords(List<Keyword> keywords,Long answerId) {
+        return answerMapper.getAnswersByKeyWords(keywords,answerId);
     }
 
 }

@@ -71,18 +71,18 @@
       <el-form-item>
         <el-button type="primary" size="medium" v-throttle="[postForm,`click`,3000]">发表评论</el-button>
 <!--        <el-button style="margin-left: 10px;" type="success" size="small" @click="submitComment">发表评论</el-button>-->
-        <el-upload
-            action="http://106.14.45.117:8055/common/upload/upload"
-            :on-preview="handlePreview"
-            :on-remove="handleRemove"
-            :before-upload="beforeUpload"
-            multiple
-            :limit="3"
-            accept="image/jpeg,image/png,application/pdf"
-        >
-          <el-button slot="trigger" type="primary" size="small">选择文件</el-button>
-          <div slot="tip" class="el-upload__tip">只能上传jpg/png/pdf文件，且不超过500kb</div>
-        </el-upload>
+<!--        <el-upload-->
+<!--            action="http://106.14.45.117:8055/common/upload/upload"-->
+<!--            :on-preview="handlePreview"-->
+<!--            :on-remove="handleRemove"-->
+<!--            :before-upload="beforeUpload"-->
+<!--            multiple-->
+<!--            :limit="3"-->
+<!--            accept="image/jpeg,image/png,application/pdf"-->
+<!--        >-->
+<!--          <el-button slot="trigger" type="primary" size="small">选择文件</el-button>-->
+<!--          <div slot="tip" class="el-upload__tip">只能上传jpg/png/pdf文件，且不超过500kb</div>-->
+<!--        </el-upload>-->
       </el-form-item>
 		</el-form>
 	</div>

@@ -431,6 +431,61 @@ public class TongYiUtil {
 
 
 
+### 3  前端设计
+
+[从零到一：构建 Vue 2 聊天机器人应用的过程-逐字显示(完整代码)_vue-chatbot-CSDN博客](https://blog.csdn.net/mmc123125/article/details/143507778)
+
+#### 关键代码
+
+将matchQuestion方法替换为questAI，由于sendMessage为异步方法，因此需要将questAI也声明为异步方法并在方法内部使用await关键字同步等待请求结果
+
+```js
+let matchedQuestion = await this.questAI(userMessage);
+```
+
+```js
+    // 发送请求
+    async questAI(userMessage) {
+      try {
+        const res = await questAI(userMessage);
+        if (res.code === 200) {
+          this.answer = res.data;
+          const result = {
+            "question": userMessage,
+            "answer": res.data.content
+          };
+          return result;
+        } else {
+          this.msgError(res.msg);
+          return null; // 或者你可以返回一个错误对象
+        }
+      } catch (error) {
+        this.msgError("请求失败");
+        return null; // 或者你可以返回一个错误对象
+      }
+    },
+```
+
+
+
+机器回复逐字显示
+
+```js
+        const answer = matchedQuestion.answer;
+        // 机器回复
+        const machineResponseObj = { sender: 'machine', text: '' };
+        currentChatNow.messages.push(machineResponseObj);
+
+        const answerLetters = answer.split(''); // 将回复拆分成字母数组
+
+        for (const letter of answerLetters) {
+          machineResponseObj.text += letter;
+          await this.delay(100); // 添加延迟以逐字显示
+        }
+```
+
+
+
 base
 
 ```

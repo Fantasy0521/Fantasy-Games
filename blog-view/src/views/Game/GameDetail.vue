@@ -10,7 +10,7 @@
           <div class="row m-padded-tb-small">
             <h2 class="ui header m-center">{{ game.name }}</h2>
           </div>
-          <!--文章简要信息-->
+          <!--帖子简要信息-->
           <div class="row m-padded-tb-small">
             <div class="ui horizontal link list m-center">
               <div class="item m-datetime">
@@ -47,7 +47,7 @@
               游戏介绍
             </h4>
           </div>
-          <!--文章Markdown正文-->
+          <!--帖子Markdown正文-->
           <div class="typo js-toc-content m-padded-tb-small line-numbers match-braces rainbow-braces" v-viewer
                :class="{'m-big-fontsize':bigFontSize}" v-html="game.description"></div>
 
@@ -112,7 +112,7 @@
         <li>发表时间：{{ game.createTime | dateFormat('YYYY-MM-DD HH:mm') }}</li>
         <li>最后修改：{{ game.updateTime | dateFormat('YYYY-MM-DD HH:mm') }}</li>
         <li>本站点采用<a href="https://creativecommons.org/licenses/by/4.0/" target="_blank"> 署名 4.0 国际 (CC BY
-          4.0) </a>创作共享协议。可自由转载、引用，并且允许商业性使用。但需署名作者且注明文章出处。
+          4.0) </a>创作共享协议。可自由转载、引用，并且允许商业性使用。但需署名作者且注明帖子出处。
         </li>
       </ul>
     </div>
@@ -146,7 +146,7 @@ export default {
     ...mapState(['siteInfo', 'focusMode'])
   },
   beforeRouteEnter(to, from, next) {
-    //路由到博客文章页面之前，应将文章的渲染完成状态置为 false
+    //路由到博客帖子页面之前，应将帖子的渲染完成状态置为 false
     next(vm => {
       // 当 beforeRouteEnter 钩子执行前，组件实例尚未创建
       // vm 就是当前组件的实例，可以在 next 方法中把 vm 当做 this用
@@ -155,23 +155,23 @@ export default {
   },
   beforeRouteLeave(to, from, next) {
     this.$store.commit(SET_FOCUS_MODE, false)
-    // 从文章页面路由到其它页面时，销毁当前组件的同时，要销毁tocbot实例
-    // 否则tocbot一直在监听页面滚动事件，而文章页面的锚点已经不存在了，会报"Uncaught TypeError: Cannot read property 'className' of null"
+    // 从帖子页面路由到其它页面时，销毁当前组件的同时，要销毁tocbot实例
+    // 否则tocbot一直在监听页面滚动事件，而帖子页面的锚点已经不存在了，会报"Uncaught TypeError: Cannot read property 'className' of null"
     tocbot.destroy()
     next()
   },
   beforeRouteUpdate(to, from, next) {
     // 一般有两种情况会触发这个钩子
-    // ①当前文章页面跳转到其它文章页面
+    // ①当前帖子页面跳转到其它帖子页面
     // ②点击目录跳转锚点时，路由hash值会改变，导致当前页面会重新加载，这种情况是不希望出现的
     // 在路由 beforeRouteUpdate 中判断路径是否改变
     // 如果跳转到其它页面，to.path!==from.path 就放行 next()
     // 如果是跳转锚点，path不会改变，hash会改变，to.path===from.path, to.hash!==from.path 不放行路由跳转，就能让锚点正常跳转
     if (to.path !== from.path) {
       this.$store.commit(SET_FOCUS_MODE, false)
-      //在当前组件内路由到其它博客文章时，要重新获取文章
+      //在当前组件内路由到其它博客帖子时，要重新获取帖子
       this.getGame(to.params.id)
-      //只要路由路径有改变，且停留在当前Game组件内，就把文章的渲染完成状态置为 false
+      //只要路由路径有改变，且停留在当前Game组件内，就把帖子的渲染完成状态置为 false
       this.$store.commit(SET_IS_BLOG_RENDER_COMPLETE, false)
       next()
     }
@@ -181,7 +181,7 @@ export default {
   },
   methods: {
     getGame(id = this.gameId) {
-      //密码保护的文章，需要发送密码验证通过后保存在localStorage的Token
+      //密码保护的帖子，需要发送密码验证通过后保存在localStorage的Token
       const blogToken = window.localStorage.getItem(`blog${id}`)
       //如果有则发送博主身份Token
       const adminToken = window.localStorage.getItem('adminToken')
@@ -193,7 +193,7 @@ export default {
           //v-html渲染完毕后，渲染代码块样式
           this.$nextTick(() => {
             Prism.highlightAll()
-            //将文章渲染完成状态置为 true
+            //将帖子渲染完成状态置为 true
             this.$store.commit(SET_IS_BLOG_RENDER_COMPLETE, true)
           })
         } else {

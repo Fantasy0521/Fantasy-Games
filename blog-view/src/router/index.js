@@ -13,6 +13,7 @@ import About from "@/views/about/About";
 import Login from "@/views/Login";
 import Game from "@/views/Game/game";
 import GameDetail from "@/views/Game/GameDetail";
+import Gpt from "@/views/gpt/Gpt.vue";
 
 Vue.use(VueRouter)
 
@@ -22,6 +23,14 @@ const routes = [
 		component: Login,
 		meta: {
 			title: '登录'
+		}
+	},
+	{
+		path: '/gptHtml',
+		name: 'gptHtml',
+		component: Gpt,
+		meta: {
+			title: 'Fantasy Gpt'
 		}
 	},
 	{
@@ -91,6 +100,14 @@ const routes = [
 				component: Moments,
 				meta: {
 					title: '动态'
+				}
+			},
+			{
+				path: '/gpt',
+				name: 'gpt',
+				component: Gpt,
+				meta: {
+					title: 'Fantasy Gpt'
 				}
 			},
 			{

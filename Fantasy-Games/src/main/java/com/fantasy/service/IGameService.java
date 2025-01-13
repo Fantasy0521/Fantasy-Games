@@ -1,8 +1,10 @@
 package com.fantasy.service;
 
+import com.fantasy.entity.Category;
 import com.fantasy.entity.Game;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.fantasy.entity.Keyword;
+import com.fantasy.entity.Tag;
 import com.fantasy.model.Result.PageResult;
 import com.fantasy.model.vo.GameInfo;
 
@@ -34,5 +36,5 @@ public interface IGameService extends IService<Game> {
 
     void updateGameRecommendById(Long id, Boolean recommend);
 
-    List<Game> getGamesByKeyWords(List<Keyword> keywords);
+    List<Game> getGamesByKeyWords(List<Keyword> keywords, List<Category> categories, List<Tag> tags);
 }

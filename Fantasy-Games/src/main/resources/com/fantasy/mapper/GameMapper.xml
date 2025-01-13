@@ -15,17 +15,39 @@
 
     <select id="getGamesByKeyWords" resultType="com.fantasy.entity.Game">
         select * from game
-        where
-            name in
-            <foreach collection="keywords" item="item" separator="," open="(" close=")">
-                #{item.content}
-            </foreach>
-           or
-            <foreach collection="keywords" item="item" separator=" or " open="(" close=")">
-                description like concat('%',#{item.content},'%')
-            </foreach>
+        right join
+        (
+            select game.id,count(game.id) c from game
+            left join game_tag on game.id = game_tag.game_id
+            where
+            1 = 1
+                <if test="categories != null and categories.size()>0">
+                    and category_id in
+                    <foreach collection="categories" item="item" separator="," open="(" close=")">
+                        #{item.id}
+                    </foreach>
+                </if>
+                <if test="tags != null and tags.size()>0">
+                    and game_tag.tag_id in
+                    <foreach collection="tags" item="item" separator="," open="(" close=")">
+                        #{item.id}
+                    </foreach>
+                </if>
+                and
+                (
+                    game.name in
+                    <foreach collection="keywords" item="item" separator="," open="(" close=")">
+                        #{item.content}
+                    </foreach>
+                   or
+                    <foreach collection="keywords" item="item" separator=" or " open="(" close=")">
+                        game.description like concat('%',#{item.content},'%')
+                    </foreach>
+                )
+            group by game.id
+        ) game_count on game.id = game_count.id
         order by
-            is_top desc,is_recommend desc,stars desc,views desc
+            game_count.c desc,is_top desc,is_recommend desc,stars desc,views desc
     </select>
 
 </mapper>

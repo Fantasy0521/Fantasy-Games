@@ -1,10 +1,7 @@
 package com.fantasy.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.fantasy.entity.Answer;
-import com.fantasy.entity.Game;
-import com.fantasy.entity.Keyword;
-import com.fantasy.entity.Question;
+import com.fantasy.entity.*;
 import com.fantasy.service.*;
 import com.fantasy.util.TongYiUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,30 +32,40 @@ public class FantasyGptServiceImpl implements IFantasyGptService {
     @Autowired
     private IGameService gameService;
 
+    @Autowired
+    private ICategoryService categoryService;
+
+    @Autowired
+    private ITagService tagService;
+
     /**
      * Fantasy-Gpt AI for Game
      * 用户输入关键词后，系统会根据关键词匹配度和推荐分计算最终分值，并推荐最终分值最高的游戏。用户可以对推荐结果进行反馈，从而不断优化推荐算法。
      * @param question
+     * @param answerId 被用户否定的回答id
      * @return
      */
     @Transactional
     @Override
-    public Answer questAI(String question) {
+    public Answer questAI(String question,Long answerId) {
         if (question == null || question.length() <= 1) {
             throw new RuntimeException("请输入正确的信息");
         }
         String result = null;
         //1 检查用户输入的问题是否已经在数据库中有相同的问题记录，有则直接根据question_id取出回答
-        Question baseQuestion = questionService.getOne(new LambdaQueryWrapper<Question>().eq(Question::getContent, question));
+        List<Question> baseQuestions = questionService.list(new LambdaQueryWrapper<Question>().eq(Question::getContent, question).orderByDesc(Question::getCreateTime));
+        Question baseQuestion = !baseQuestions.isEmpty() ? baseQuestions.get(0) : null;
         if (baseQuestion != null){
             Answer answer = answerService.getAnswerByQuestionId(baseQuestion.getId());
-            if (answer != null) {
+            if (answer != null && answer.getId() != answerId) {
                 return answer;
             }
         }
 
-        // 新问题
-        Question question1 = initQuestion(question);
+        Question question1 = baseQuestion;
+        if (question1 == null) {// 新问题
+            question1 = initQuestion(question);
+        }
         //2 没有相同的问题记录，这时候先从问题中提取关键词和对应的权重
         // 通过TF-IDF算法获取用户输入的关键词
 //        List<Keyword> keywords = keywordService.getKeyWordsByQuestContent(question);
@@ -75,7 +83,7 @@ public class FantasyGptServiceImpl implements IFantasyGptService {
         //3 在数据库中查找相同的关键词，通过关键词获取到所有的回答，通过关键词的权重和回答的认可度计算出最符合的一个回答
         if (!keywordList.isEmpty()) {
             // 获取关键词对应的回答
-            List<Answer> answers = answerService.getAnswersByKeyWords(keywordList);
+            List<Answer> answers = answerService.getAnswersByKeyWords(keywordList,answerId);
             // 计算关键词的权重和回答的认可度计算出最符合的一个回答
             Answer answer = getBestAnswer(keywords, answers);
             if (answer != null) {
@@ -87,12 +95,19 @@ public class FantasyGptServiceImpl implements IFantasyGptService {
 
         //4 如果通过关键词也未找到已有回答，开始根据问题生成回答，从游戏库中找到符合用户关键词的游戏，通用语句+对应游戏 =》回答 。 回答和关键词存入数据库
         Answer answer = new Answer();
-        //todo high 这里可能得到用户指定类型以外的游戏，需要优化，取出游戏类型传入category_id
-        List<Game> games = gameService.getGamesByKeyWords(keywords);
-        if (!games.isEmpty()) {
-            Game game = getBestGame(games);
-            result = "为您从游戏库中找到最合适的一款游戏：" + game.getName() + "。" + game.getDescription();
-            answer = initAnswer(result,false);
+
+        if (answerId == null){//被否定后就不再从游戏库中生成回答，直接调用通义api生成回答
+            //检查关键词中的游戏类型，如果存在则添加分类过滤条件
+            List<Category> categories = categoryService.getCateGoryByKeyWords(keywords);
+            //检查关键词中的游戏标签，如果存在则添加标签过滤条件
+            List<Tag> tags = tagService.getTagsByKeyWords(keywords);
+
+            List<Game> games = gameService.getGamesByKeyWords(keywords,categories,tags);
+            if (!games.isEmpty()) {
+                Game game = getBestGame(games,keywords);
+                result = "为您从游戏库中找到最合适的一款游戏：" + game.getName() + "。" + game.getDescription();
+                answer = initAnswer(result,false);
+            }
         }
 
         if (result == null) {
@@ -111,7 +126,7 @@ public class FantasyGptServiceImpl implements IFantasyGptService {
 
     @Async
     protected void afterSaveHandler(Question question, List<Keyword> keywordList, List<Keyword> newKeywordList, Answer answer) {
-        questionService.save(question);
+        questionService.saveOrUpdate(question);
         answer.setQuestionId(question.getId());
         answerService.saveOrUpdate(answer);
         keywordService.saveKeyWords(newKeywordList,question.getId(),answer.getId());
@@ -165,7 +180,10 @@ public class FantasyGptServiceImpl implements IFantasyGptService {
      * @param games
      * @return
      */
-    private Game getBestGame(List<Game> games) {
+    private Game getBestGame(List<Game> games,List<Keyword> keywords) {
+        //这里同一个游戏可能出现多次，出现次数越多所匹配的关键字也就越多，优先返回与关键词匹配度最高的游戏
+        //如果list中的所有游戏出现次数相同，则返回第一个游戏，即推荐度最高的游戏
+        //这个逻辑我选择在sql中处理，这里只需要取第一个游戏就行
         return games.get(0);
     }
 
@@ -177,7 +195,7 @@ public class FantasyGptServiceImpl implements IFantasyGptService {
             answer.setAcceptanceCount(answer.getAcceptanceCount() - 1);
             answerService.updateById(answer);
         }
-        return questAI(question);
+        return questAI(question,answerId);
     }
 
     @Override
@@ -205,6 +223,7 @@ public class FantasyGptServiceImpl implements IFantasyGptService {
         answer.setRecommendScore(0.5);
         answer.setFinalScore(0.5);
         answer.setAcceptanceCount(1);
+        answer.setIsTongyi(isTongyi);
         answer.setCreateTime(LocalDateTime.now());
         return answer;
     }

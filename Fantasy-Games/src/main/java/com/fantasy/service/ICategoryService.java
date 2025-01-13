@@ -2,6 +2,7 @@ package com.fantasy.service;
 
 import com.fantasy.entity.Category;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.fantasy.entity.Keyword;
 import com.fantasy.model.Result.PageResult;
 import com.fantasy.model.vo.PageComment;
 
@@ -22,4 +23,6 @@ public interface ICategoryService extends IService<Category> {
     Map<String, List> getCategoryBlogCountMap();
 
     PageResult<Category> getAllCategoriesByPage(Integer pageNum, Integer pageSize);
+
+    List<Category> getCateGoryByKeyWords(List<Keyword> keywords);
 }

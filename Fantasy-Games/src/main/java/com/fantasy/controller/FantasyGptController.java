@@ -21,7 +21,7 @@ public class FantasyGptController {
     @GetMapping("/questAI")
     @ApiOperation(value = "questAI",notes = "1")
     public Result questAI(String question){
-        Answer result = fantasyGptService.questAI(question);
+        Answer result = fantasyGptService.questAI(question,null);
         return Result.ok("success",result);
     }
 

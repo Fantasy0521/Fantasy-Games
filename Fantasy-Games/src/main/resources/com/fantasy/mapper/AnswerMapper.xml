@@ -8,10 +8,17 @@
         left join answer_keyword ak
         on a.id = ak.answer_id
         where
+            a.acceptance_count > 0
+            and
+            a.recommend_score > 0
+            and
             ak.keyword_id in
             <foreach collection="keywords" item="item" open="(" separator="," close=")">
                 #{item.id}
             </foreach>
+            <if test="answerId != null">
+                and a.id != #{answerId}
+            </if>
         order by a.recommend_score desc
     </select>
 

@@ -13,7 +13,7 @@
 							<a href="javascript:;" @click.prevent="toBlog(item)" class="m-black">{{ item.name }}</a>
 						</h2>
 					</div>
-					<!--文章简要信息-->
+					<!--帖子简要信息-->
 					<div class="row m-padded-tb-small">
 						<div class="ui horizontal link list m-center">
 							<div class="item m-datetime">
@@ -34,7 +34,7 @@
 					<router-link :to="`/category/${categoryName}`" class="ui orange large ribbon label">
 						<i class="small folder open icon"></i><span class="m-text-500">{{ categoryName }}</span>
 					</router-link>
-					<!--文章Markdown描述-->
+					<!--帖子Markdown描述-->
 					<div class="typo m-padded-tb-small line-numbers match-braces rainbow-braces" v-html="item.description"></div>
           <!-- 游戏封面-->
           <div class="container">

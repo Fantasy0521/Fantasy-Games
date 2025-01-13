@@ -18,5 +18,5 @@ public interface IAnswerService extends IService<Answer> {
 
     Answer getAnswerByQuestionId(Long id);
 
-    List<Answer> getAnswersByKeyWords(List<Keyword> keywords);
+    List<Answer> getAnswersByKeyWords(List<Keyword> keywords,Long answerId);
 }

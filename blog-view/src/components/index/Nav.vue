@@ -30,7 +30,7 @@
 			<router-link to="/moments" class="item" :class="{'m-mobile-hide': mobileHide,'active':$route.name==='moments'}">
 				<i class="comment alternate outline icon"></i>动态
 			</router-link>
-			<router-link to="/moments" class="item" :class="{'m-mobile-hide': mobileHide,'active':$route.name==='moments'}">
+			<router-link to="/gpt" class="item" :class="{'m-mobile-hide': mobileHide,'active':$route.name==='gpt'}">
 				<i class="comment alternate outline icon"></i>Fantasy Gpt
 			</router-link>
 			<router-link to="/friends" class="item" :class="{'m-mobile-hide': mobileHide,'active':$route.name==='friends'}">

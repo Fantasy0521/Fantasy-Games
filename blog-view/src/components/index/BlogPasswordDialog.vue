@@ -1,6 +1,6 @@
 <template>
-	<!--私密文章密码对话框-->
-	<el-dialog title="请输入受保护文章密码" width="30%" :visible.sync="blogPasswordDialogVisible"
+	<!--私密帖子密码对话框-->
+	<el-dialog title="请输入受保护帖子密码" width="30%" :visible.sync="blogPasswordDialogVisible"
 	           :lock-scroll="false" :before-close="blogPasswordDialogClosed">
 		<!--内容主体-->
 		<el-form :model="blogPasswordForm" :rules="formRules" ref="formRef" label-width="80px">

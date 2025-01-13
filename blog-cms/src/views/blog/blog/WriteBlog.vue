@@ -3,22 +3,22 @@
 		<el-form :model="form" :rules="formRules" ref="formRef" label-position="top">
 			<el-row :gutter="20">
 				<el-col :span="12">
-					<el-form-item label="文章标题" prop="title">
+					<el-form-item label="帖子标题" prop="title">
 						<el-input v-model="form.title" placeholder="请输入标题"></el-input>
 					</el-form-item>
 				</el-col>
 				<el-col :span="12">
-					<el-form-item label="文章首图URL" prop="firstPicture">
-						<el-input v-model="form.firstPicture" placeholder="文章首图，用于随机文章展示"></el-input>
+					<el-form-item label="帖子首图URL" prop="firstPicture">
+						<el-input v-model="form.firstPicture" placeholder="帖子首图，用于随机帖子展示"></el-input>
 					</el-form-item>
 				</el-col>
 			</el-row>
 
-			<el-form-item label="文章描述" prop="description">
+			<el-form-item label="帖子描述" prop="description">
 				<mavon-editor v-model="form.description"/>
 			</el-form-item>
 
-			<el-form-item label="文章正文" prop="content">
+			<el-form-item label="帖子正文" prop="content">
 				<mavon-editor v-model="form.content" @imgAdd="imgAdd"/>
 			</el-form-item>
 
@@ -42,7 +42,7 @@
 			<el-row :gutter="20">
 				<el-col :span="8">
 					<el-form-item label="字数" prop="words">
-						<el-input v-model="form.words" placeholder="请输入文章字数（自动计算阅读时长）" type="number"></el-input>
+						<el-input v-model="form.words" placeholder="请输入帖子字数（自动计算阅读时长）" type="number"></el-input>
 					</el-form-item>
 				</el-col>
 				<el-col :span="8">
@@ -52,7 +52,7 @@
 				</el-col>
 				<el-col :span="8">
 					<el-form-item label="浏览次数" prop="views">
-						<el-input v-model="form.views" placeholder="请输入文章字数（可选）默认为 0" type="number"></el-input>
+						<el-input v-model="form.views" placeholder="请输入帖子字数（可选）默认为 0" type="number"></el-input>
 					</el-form-item>
 				</el-col>
 			</el-row>
@@ -147,7 +147,7 @@
 					firstPicture: [{required: true, message: '请输入首图链接', trigger: 'change'}],
 					cate: [{required: true, message: '请选择分类', trigger: 'change'}],
 					tagList: [{required: true, message: '请选择标签', trigger: 'change'}],
-					words: [{required: true, message: '请输入文章字数', trigger: 'change'}],
+					words: [{required: true, message: '请输入帖子字数', trigger: 'change'}],
 				},
 			}
 		},

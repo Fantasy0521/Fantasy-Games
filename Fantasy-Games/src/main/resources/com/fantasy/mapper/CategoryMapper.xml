@@ -2,4 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fantasy.mapper.CategoryMapper">
 
+    <select id="getCategoryByKeyWords" resultType="com.fantasy.entity.Category">
+        select * from category where
+        <foreach collection="keywords" item="item" separator=" or " open="(" close=")">
+            category_name like concat(#{item.content},'%')
+        </foreach>
+    </select>
 </mapper>

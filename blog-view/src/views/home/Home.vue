@@ -27,11 +27,11 @@
 					vm.$store.commit(SET_IS_BLOG_TO_HOME, false)
 					vm.getBlogList()
 				} else {
-					//如果文章页面是起始访问页，首页将是第一次进入，即缓存不存在，要请求数据
+					//如果帖子页面是起始访问页，首页将是第一次进入，即缓存不存在，要请求数据
 					if (!vm.getBlogListFinish) {
 						vm.getBlogList()
 					}
-					//从文章页面跳转到首页时，使用首页缓存
+					//从帖子页面跳转到首页时，使用首页缓存
 					vm.$store.commit(SET_IS_BLOG_TO_HOME, true)
 				}
 			})

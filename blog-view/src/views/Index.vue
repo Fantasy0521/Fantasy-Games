@@ -26,7 +26,7 @@
 						<div class="three wide column m-mobile-hide">
 							<RandomBlog :randomBlogList="randomBlogList" :class="{'m-display-none':focusMode}"/>
 							<Tags :tagList="tagList" :class="{'m-display-none':focusMode}"/>
-							<!--只在文章页面显示目录-->
+							<!--只在帖子页面显示目录-->
 							<Tocbot v-if="$route.name==='blog'"/>
 						</div>
 					</div>
@@ -34,7 +34,7 @@
 			</div>
 		</div>
 
-		<!--私密文章密码对话框-->
+		<!--私密帖子密码对话框-->
 		<BlogPasswordDialog/>
 
 		<!--APlayer-->

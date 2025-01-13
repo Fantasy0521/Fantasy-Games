@@ -42,7 +42,7 @@ const routes = [
 				path: 'write',
 				name: 'WriteBlog',
 				component: () => import('@/views/blog/blog/WriteBlog'),
-				meta: {title: '写文章', icon: 'el-icon-edit'}
+				meta: {title: '写帖子', icon: 'el-icon-edit'}
 			},
 			{
 				path: 'moment/write',
@@ -54,7 +54,7 @@ const routes = [
 				path: 'edit/:id',
 				name: 'EditBlog',
 				component: () => import('@/views/blog/blog/WriteBlog'),
-				meta: {title: '编辑文章', icon: 'el-icon-edit'},
+				meta: {title: '编辑帖子', icon: 'el-icon-edit'},
 				hidden: true
 			},
 			{
@@ -68,7 +68,7 @@ const routes = [
 				path: 'list',
 				name: 'BlogList',
 				component: () => import('@/views/blog/blog/BlogList'),
-				meta: {title: '文章管理', icon: 'el-icon-s-order'}
+				meta: {title: '帖子管理', icon: 'el-icon-s-order'}
 			},
 			{
 				path: 'game/list',

@@ -18,6 +18,6 @@ import java.util.List;
 @Mapper
 public interface AnswerMapper extends BaseMapper<Answer> {
 
-    List<Answer> getAnswersByKeyWords(List<Keyword> keywords);
+    List<Answer> getAnswersByKeyWords(List<Keyword> keywords,Long answerId);
 
 }

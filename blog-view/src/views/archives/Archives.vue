@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="ui top attached segment" style="text-align: center">
-			<h2 class="m-text-500">文章归档</h2>
+			<h2 class="m-text-500">帖子归档</h2>
 			<p>好! 目前共计 {{ count }} 篇日志。 继续努力。</p>
 		</div>
 		<div class="ui attached segment">
