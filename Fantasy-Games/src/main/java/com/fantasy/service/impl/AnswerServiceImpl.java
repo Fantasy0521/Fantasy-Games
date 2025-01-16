@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.fantasy.entity.Answer;
 import com.fantasy.entity.Keyword;
 import com.fantasy.mapper.AnswerMapper;
+import com.fantasy.model.dto.AnswerDto;
 import com.fantasy.service.IAnswerService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +27,8 @@ public class AnswerServiceImpl extends ServiceImpl<AnswerMapper, Answer> impleme
     private AnswerMapper answerMapper;
 
     @Override
-    public Answer getAnswerByQuestionId(Long id) {
-        List<Answer> list = list(new LambdaQueryWrapper<Answer>().eq(Answer::getQuestionId, id).gt(Answer::getAcceptanceCount,0).orderBy(true,false, Answer::getFinalScore));
+    public Answer getAnswerByQuestionId(Long id,List<Answer> excludeAnswers) {
+        List<Answer> list = answerMapper.getAnswerByQuestionId(id,excludeAnswers);
         //计算最终分值
         if (!list.isEmpty()) {
             return list.get(0);
@@ -36,8 +37,8 @@ public class AnswerServiceImpl extends ServiceImpl<AnswerMapper, Answer> impleme
     }
 
     @Override
-    public List<Answer> getAnswersByKeyWords(List<Keyword> keywords,Long answerId) {
-        return answerMapper.getAnswersByKeyWords(keywords,answerId);
+    public List<AnswerDto> getAnswersByKeyWords(List<Keyword> keywords, List<Answer> excludeAnswers) {
+        return answerMapper.getAnswersByKeyWords(keywords,excludeAnswers);
     }
 
 }

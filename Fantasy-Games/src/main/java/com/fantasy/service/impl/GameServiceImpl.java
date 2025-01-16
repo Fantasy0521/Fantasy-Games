@@ -84,29 +84,18 @@ public class GameServiceImpl extends ServiceImpl<GameMapper, Game> implements IG
     }
 
     @Override
-    public PageResult<GameInfo> getAllGamesByPage(Integer pageNum, Integer pageSize) {
+    public PageInfo<GameInfo> getAllGamesByPage(Integer pageNum, Integer pageSize) {
         //1 构建分页对象
-        Page<Game> pageInfo = new Page<>(pageNum, pageSize);
-
-        //2 创建LambdaQueryWrapper
-        LambdaQueryWrapper<Game> queryWrapper = new LambdaQueryWrapper<>();
-
-        //3 添加排序条件 is_top desc, create_time desc
-        queryWrapper.orderByDesc(Game::getIsTop, Game::getCreateTime);
-
-        //4 开始分页查询
-        Page<Game> gamePage = this.page(pageInfo, queryWrapper);
-
-        //5 转为GameInfo 返回页面数据
-        Page<GameInfo> gameInfoPage = new Page<>();
+        PageHelper.startPage(pageNum, pageSize, "is_top desc, views desc, stars desc, create_time desc");
+        List<Game> list = list();
+        PageInfo<Game> gamePageInfo = new PageInfo<>(list);
         //对GameInfo进行处理
-        extracted(gamePage, gameInfoPage);
-
-        //6 封装为前端规定的PageResult
-        // 此处getPages需要加一
-        PageResult<GameInfo> result = new PageResult<>((int) gameInfoPage.getPages() + 1, gameInfoPage.getRecords());
-
-        return result;
+        List<GameInfo> gameInfos = gameListToGameInfoList(list);
+        PageInfo<GameInfo> gameInfoPageInfo = new PageInfo<>(gameInfos);
+        //转化后需要重新设置分页信息
+        gameInfoPageInfo.setPages(gamePageInfo.getPages());
+        gameInfoPageInfo.setTotal(gamePageInfo.getTotal());
+        return gameInfoPageInfo;
     }
 
     @Override
@@ -175,8 +164,8 @@ public class GameServiceImpl extends ServiceImpl<GameMapper, Game> implements IG
     }
 
     @Override
-    public List<Game> getGamesByKeyWords(List<Keyword> keywords, List<Category> categories, List<Tag> tags) {
-        return gameMapper.getGamesByKeyWords(keywords,categories,tags);
+    public List<Game> getGamesByKeyWords(List<Keyword> keywords, List<Category> categories, List<Tag> tags,List<Long> excludeGameIds) {
+        return gameMapper.getGamesByKeyWords(keywords,categories,tags,excludeGameIds);
     }
 
     private void handlerDate(GameInfo gameInfo,Game game){
@@ -223,16 +212,15 @@ public class GameServiceImpl extends ServiceImpl<GameMapper, Game> implements IG
     /**
      * 对GameInfo进行处理
      *
-     * @param gamePage
-     * @param gameInfoPage
+     * @param gameList
      */
-    private void extracted(Page<Game> gamePage, Page<GameInfo> gameInfoPage) {
-        //1 对象拷贝
-        BeanUtils.copyProperties(gamePage, gameInfoPage, "records");
-        //对records进行处理
-        List<Game> records = gamePage.getRecords();
-        List<GameInfo> list = records.stream().map(this::gameToGameInfo).collect(Collectors.toList());
-        gameInfoPage.setRecords(list);
+    private List<GameInfo> gameListToGameInfoList(List<Game> gameList) {
+        List<GameInfo> gameInfoList = new ArrayList<>();
+        gameList.forEach(game -> {
+            GameInfo gameInfo = gameToGameInfo(game);
+            gameInfoList.add(gameInfo);
+        });
+        return gameInfoList;
     }
 
     private GameInfo gameToGameInfo(Game game) {

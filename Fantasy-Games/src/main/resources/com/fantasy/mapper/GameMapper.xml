@@ -33,6 +33,12 @@
                         #{item.id}
                     </foreach>
                 </if>
+                <if test="excludeGameIds != null">
+                    and game.id not in
+                    <foreach collection="excludeGameIds" item="item" separator="," open="(" close=")">
+                        #{item}
+                    </foreach>
+                </if>
                 and
                 (
                     game.name in

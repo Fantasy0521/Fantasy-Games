@@ -67,6 +67,7 @@ export default {
         inputMessage: ''
       },
       answer: null,
+      excludeAnswers: [],
       messageHistory : '',
       messages: [],
       chatList: [], // 存储聊天列表
@@ -232,6 +233,8 @@ export default {
     },
     // 发送请求
     async questAI(userMessage) {
+      //清除excludeAnswers
+      this.excludeAnswers = [];
       try {
         const res = await questAI(userMessage);
         if (res.code === 200) {
@@ -254,8 +257,9 @@ export default {
     // 发送请求
     async retry(userMessage) {
       console.log('retry')
+      this.excludeAnswers.push(this.answer);
       try {
-        const res = await retry(this.answer.id,this.messageHistory);
+        const res = await retry(this.answer.id,this.messageHistory,this.excludeAnswers);
         if (res.code === 200) {
           this.answer = res.data;
           const result = {

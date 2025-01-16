@@ -7,6 +7,7 @@ import com.fantasy.entity.Keyword;
 import com.fantasy.entity.Tag;
 import com.fantasy.model.Result.PageResult;
 import com.fantasy.model.vo.GameInfo;
+import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 
@@ -22,7 +23,7 @@ public interface IGameService extends IService<Game> {
 
     PageResult<Game> getGameInfoListByCategoryNameAndIsPublished(String categoryName,String keyword, Integer pageNum,Integer pageSize);
 
-    PageResult<GameInfo> getAllGamesByPage(Integer pageNum, Integer pageSize);
+    PageInfo<GameInfo> getAllGamesByPage(Integer pageNum, Integer pageSize);
 
     GameInfo getGameById(Long id);
 
@@ -36,5 +37,5 @@ public interface IGameService extends IService<Game> {
 
     void updateGameRecommendById(Long id, Boolean recommend);
 
-    List<Game> getGamesByKeyWords(List<Keyword> keywords, List<Category> categories, List<Tag> tags);
+    List<Game> getGamesByKeyWords(List<Keyword> keywords, List<Category> categories, List<Tag> tags,List<Long> excludeGameIds);
 }

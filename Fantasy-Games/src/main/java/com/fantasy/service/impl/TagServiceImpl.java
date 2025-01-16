@@ -47,6 +47,9 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements ITagS
 
     @Override
     public List<Tag> getTagsByKeyWords(List<Keyword> keywords) {
+        if (keywords == null) {
+            return null;
+        }
         List<String> collect = keywords.stream().map(Keyword::getContent).collect(Collectors.toList());
         return this.list(new LambdaQueryWrapper<Tag>().in(Tag::getName, collect));
     }

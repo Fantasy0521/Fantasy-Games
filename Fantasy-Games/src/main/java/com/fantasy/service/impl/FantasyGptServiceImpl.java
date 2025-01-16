@@ -2,6 +2,8 @@ package com.fantasy.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.fantasy.entity.*;
+import com.fantasy.mapper.CalculateConfigMapper;
+import com.fantasy.model.dto.AnswerDto;
 import com.fantasy.service.*;
 import com.fantasy.util.TongYiUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,8 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class FantasyGptServiceImpl implements IFantasyGptService {
@@ -38,16 +42,19 @@ public class FantasyGptServiceImpl implements IFantasyGptService {
     @Autowired
     private ITagService tagService;
 
+    @Autowired
+    private CalculateConfigMapper calculateConfigMapper;
+
     /**
      * Fantasy-Gpt AI for Game
      * 用户输入关键词后，系统会根据关键词匹配度和推荐分计算最终分值，并推荐最终分值最高的游戏。用户可以对推荐结果进行反馈，从而不断优化推荐算法。
      * @param question
-     * @param answerId 被用户否定的回答id
+     * @param excludeAnswers 被用户否定的回答列表
      * @return
      */
     @Transactional
     @Override
-    public Answer questAI(String question,Long answerId) {
+    public Answer questAI(String question,List<Answer> excludeAnswers) {
         if (question == null || question.length() <= 1) {
             throw new RuntimeException("请输入正确的信息");
         }
@@ -56,8 +63,8 @@ public class FantasyGptServiceImpl implements IFantasyGptService {
         List<Question> baseQuestions = questionService.list(new LambdaQueryWrapper<Question>().eq(Question::getContent, question).orderByDesc(Question::getCreateTime));
         Question baseQuestion = !baseQuestions.isEmpty() ? baseQuestions.get(0) : null;
         if (baseQuestion != null){
-            Answer answer = answerService.getAnswerByQuestionId(baseQuestion.getId());
-            if (answer != null && answer.getId() != answerId) {
+            Answer answer = answerService.getAnswerByQuestionId(baseQuestion.getId(),excludeAnswers);
+            if (answer != null) {
                 return answer;
             }
         }
@@ -68,27 +75,31 @@ public class FantasyGptServiceImpl implements IFantasyGptService {
         }
         //2 没有相同的问题记录，这时候先从问题中提取关键词和对应的权重
         // 通过TF-IDF算法获取用户输入的关键词
-//        List<Keyword> keywords = keywordService.getKeyWordsByQuestContent(question);
         Map<String, List<Keyword>> keyWordMap = keywordService.getKeyWordsAndNewWordsByQuestContent(question);
         List<Keyword> keywordList = keyWordMap.get("keywords");
-        List<Keyword> newKeywordList = keyWordMap.get("newKeyWords");
+        //新词(可能的关键词)需要作为暂定的关键词存入数据库,后续根据定时任务统计词频将高频新词设为关键词
         List<Keyword> newWordList = keyWordMap.get("newWords");
-        // 出现问题 newWordList中的新词(可能的关键词)不加入newKeywordList就永远不会成为关键词,因此还需要保存新词newWord
-        // 将newWord添加到newKeywordList中
-        newKeywordList.addAll(newWordList);
         //所有关键词
-        List<Keyword> keywords = keywordList;
-        keywords.addAll(newKeywordList);
+        List<Keyword> words = keywordList;
+        if (words.isEmpty()){
+            words = newWordList;
+        }else {
+            words.addAll(newWordList);
+        }
 
         //3 在数据库中查找相同的关键词，通过关键词获取到所有的回答，通过关键词的权重和回答的认可度计算出最符合的一个回答
         if (!keywordList.isEmpty()) {
             // 获取关键词对应的回答
-            List<Answer> answers = answerService.getAnswersByKeyWords(keywordList,answerId);
+            List<AnswerDto> answers = answerService.getAnswersByKeyWords(keywordList,excludeAnswers);
             // 计算关键词的权重和回答的认可度计算出最符合的一个回答
-            Answer answer = getBestAnswer(keywords, answers);
+            Answer answer = getBestAnswer(keywordList, answers);
             if (answer != null) {
                 //返回回答前先保存问题和新产生的关键词
-                afterSaveHandler(question1,keywordList,newKeywordList,answer);
+                //这里的answer也要新保存一份,因为要保存question_id,每一个不同的问题对应一条回答记录(即使回答内容相同),方便后续对回答的认可度进行修改
+                if (!answer.getQuestionId().equals(question1.getId())){
+                    answer.setId(null);
+                }
+                afterSaveHandler(question1,keywordList,newWordList,answer);
                 return answer;
             }
         }
@@ -96,17 +107,22 @@ public class FantasyGptServiceImpl implements IFantasyGptService {
         //4 如果通过关键词也未找到已有回答，开始根据问题生成回答，从游戏库中找到符合用户关键词的游戏，通用语句+对应游戏 =》回答 。 回答和关键词存入数据库
         Answer answer = new Answer();
 
-        if (answerId == null){//被否定后就不再从游戏库中生成回答，直接调用通义api生成回答
+        if (!words.isEmpty() && (excludeAnswers == null || excludeAnswers.size() < 3)){//被否定3次以上后就不再从游戏库中生成回答，直接调用通义api生成回答
             //检查关键词中的游戏类型，如果存在则添加分类过滤条件
-            List<Category> categories = categoryService.getCateGoryByKeyWords(keywords);
+            List<Category> categories = categoryService.getCateGoryByKeyWords(words);
             //检查关键词中的游戏标签，如果存在则添加标签过滤条件
-            List<Tag> tags = tagService.getTagsByKeyWords(keywords);
+            List<Tag> tags = tagService.getTagsByKeyWords(words);
 
-            List<Game> games = gameService.getGamesByKeyWords(keywords,categories,tags);
+            // 排除excludeAnswers中的游戏id
+            List<Long> excludeGameIds = null;
+            if (excludeAnswers != null) {
+                excludeGameIds = excludeAnswers.stream().map(Answer::getGameId).filter(Objects::nonNull).collect(Collectors.toList());
+            }
+            List<Game> games = gameService.getGamesByKeyWords(words,categories,tags,excludeGameIds);
             if (!games.isEmpty()) {
-                Game game = getBestGame(games,keywords);
+                Game game = getBestGame(games,keywordList);
                 result = "为您从游戏库中找到最合适的一款游戏：" + game.getName() + "。" + game.getDescription();
-                answer = initAnswer(result,false);
+                answer = initAnswer(result,false,game.getId());
             }
         }
 
@@ -114,12 +130,15 @@ public class FantasyGptServiceImpl implements IFantasyGptService {
             //5 如果在游戏库中未找到符合用户关键词的游戏，此时直接调用通义api生成回答，回答和关键词存入数据库
             result = tongYiUtil.questAI(question);
             //设置默认的推荐分值和最终分值
-            answer = initAnswer(result,true);
+            answer = initAnswer(result,true,null);
         }
         answer.setQuestionId(question1.getId());
+        //计算推荐分值
+        Double recommendScore = calculateRecommendScore(answer.getGameId());
+        answer.setRecommendScore(recommendScore);
 
         //6 异步后处理 保存问题、关键词、回答到数据库
-        afterSaveHandler(question1,keywordList,newKeywordList,answer);
+        afterSaveHandler(question1,keywordList,newWordList,answer);
         return answer;
     }
 
@@ -129,8 +148,10 @@ public class FantasyGptServiceImpl implements IFantasyGptService {
         questionService.saveOrUpdate(question);
         answer.setQuestionId(question.getId());
         answerService.saveOrUpdate(answer);
-        keywordService.saveKeyWords(newKeywordList,question.getId(),answer.getId());
         keywordService.updateBatchById(keywordList);
+        keywordService.saveKeyWordsAndSub(newKeywordList,question.getId(),answer.getId());
+        //只保存keywordList的关联表信息
+        keywordService.saveKeyWordsSub(keywordList,question.getId(),answer.getId());
     }
 
     /**
@@ -139,21 +160,21 @@ public class FantasyGptServiceImpl implements IFantasyGptService {
      * @param answers
      * @return
      */
-    private Answer getBestAnswer(List<Keyword> keywords, List<Answer> answers) {
-        //todo 根据关键词权重和匹配度计算最好的回答
+    private Answer getBestAnswer(List<Keyword> keywords, List<AnswerDto> answers) {
+        //根据关键词权重和匹配度计算最好的回答
         Answer bestAnswer = null;
         Double bestFinalScore = 0.0;
         if (!answers.isEmpty()) {
-//            for (Answer answer : answers){
-//                Double finalScore = calculateFinalScore(answer,keywords);
-//                if (finalScore > bestFinalScore){
-//                    bestFinalScore = finalScore;
-//                    bestAnswer = answer;
-//                }
-//            }
-            return answers.get(0);
+            for (AnswerDto answer : answers){
+                Double finalScore = calculateFinalScore(answer,keywords);
+                if (finalScore > bestFinalScore){
+                    bestFinalScore = finalScore;
+                    bestAnswer = answer;
+                }
+            }
+//            return answers.get(0);
         }
-        return null;
+        return bestAnswer;
     }
 
     /**
@@ -162,17 +183,55 @@ public class FantasyGptServiceImpl implements IFantasyGptService {
      * @param keywords
      * @return
      */
-    private Double calculateFinalScore(Answer answer,List<Keyword> keywords) {
-        // todo 最终分 = 认可度系数 * 认可度 * 推荐分系数 * 推荐分值 * 关键词匹配度
+    private Double calculateFinalScore(AnswerDto answer,List<Keyword> keywords) {
+        //最终分 = 认可度系数 * 认可度 + 推荐分系数 * 推荐分值 + 关键词匹配系数 * 关键词匹配度
         //对应的系数从数据库推荐算法配置表获取
-        Double recommendScore = calculateRecommendScore(answer);
-
-        return null;
+        CalculateConfig config = calculateConfigMapper.selectOne(new LambdaQueryWrapper<CalculateConfig>().eq(CalculateConfig::getType, 1));
+        Double recommendScoreCoe = config.getRecommendScoreCoe();
+        Double acceptanceScoreCoe = config.getAcceptanceScoreCoe();
+        Double keywordScoreCoe = config.getKeywordScoreCoe();
+        Double finalScore = 0.0;
+        if (answer == null){
+            return null;
+        }
+        Double recommendScore = answer.getRecommendScore();
+        Integer acceptanceCount = answer.getAcceptanceCount();
+        finalScore = recommendScoreCoe * recommendScore + acceptanceScoreCoe * acceptanceCount;
+        //一个回答有多个关键词，多个关键词对应多个关键词权重
+        List<Keyword> answerKeywords = answer.getKeywords();
+        for (Keyword answerKeyword : answerKeywords) {
+            for (Keyword keyword : keywords) {
+                if (answerKeyword.getId() == keyword.getId()) {
+                    finalScore += keywordScoreCoe * keyword.getWeight();
+                }
+            }
+        }
+        return finalScore;
     }
 
-    private Double calculateRecommendScore(Answer answer) {
-        // todo 推荐分受游戏推荐指数影响  , 可能需要加上game_id字段
-        return null;
+    /**
+     * 根据游戏计算推荐分
+     * @param gameId
+     * @return
+     */
+    public Double calculateRecommendScore(Long gameId) {
+        //推荐分受游戏推荐指数影响
+        if (gameId != null){
+            Game game = gameService.getById(gameId);
+            if (game != null){
+                if (game.getIsTop()){
+                    return 100.0;
+                }else {
+                    //todo 改为BigDecimal类型进行计算
+                    double score = 50.0 + game.getViews() / 10000.0 + game.getStars() / 10000.0;
+                    if (score > 100.0){
+                        return 99.0;
+                    }
+                    return score;
+                }
+            }
+        }
+        return 50.0;
     }
 
     /**
@@ -188,14 +247,20 @@ public class FantasyGptServiceImpl implements IFantasyGptService {
     }
 
     @Override
-    public Answer retry(Long answerId,String question) {
+    public Answer retry(Long answerId,List<Answer> excludeAnswers,String question) {
         //提高answer的认可度并重新计算最终分值
         Answer answer = answerService.getById(answerId);
         if (answer != null) {
-            answer.setAcceptanceCount(answer.getAcceptanceCount() - 1);
+            if (answer.getAcceptanceCount() <= 0){
+                //设定为否定状态
+                answer.setStatus(false);
+            }else {
+                //认可度减一
+                answer.setAcceptanceCount(answer.getAcceptanceCount() - 1);
+            }
             answerService.updateById(answer);
         }
-        return questAI(question,answerId);
+        return questAI(question,excludeAnswers);
     }
 
     @Override
@@ -217,12 +282,14 @@ public class FantasyGptServiceImpl implements IFantasyGptService {
         return question;
     }
 
-    private Answer initAnswer(String result,Boolean isTongyi){
+    private Answer initAnswer(String result,Boolean isTongyi,Long gameId){
         Answer answer = new Answer();
         answer.setContent(result);
-        answer.setRecommendScore(0.5);
-        answer.setFinalScore(0.5);
+        answer.setRecommendScore(50.0);
+        answer.setFinalScore(50.0);
         answer.setAcceptanceCount(1);
+        answer.setGameId(gameId);
+        answer.setStatus(true);
         answer.setIsTongyi(isTongyi);
         answer.setCreateTime(LocalDateTime.now());
         return answer;

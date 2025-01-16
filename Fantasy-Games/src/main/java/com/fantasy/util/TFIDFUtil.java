@@ -266,6 +266,15 @@ public class TFIDFUtil {
     }
 
     /**
+     * 通过TF-IDF算法提取关键词的权重 这里取缓存值
+     * @param content
+     * @return 缓存中的关键词的权重
+     */
+    public static Double getKeyWordWeight(String content) {
+        return wordTFIDFAll.get(content);
+    }
+
+    /**
      * 通过TF-IDF算法提取关键词和TFIDF值 这里取缓存值
      * @param content
      * @param topN

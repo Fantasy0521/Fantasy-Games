@@ -24,5 +24,5 @@ public interface GameMapper extends BaseMapper<Game> {
 
     List<Game> getGameInfoListByCategoryNameAndIsPublished(String categoryName,String keyword);
 
-    List<Game> getGamesByKeyWords(@Param(value = "keywords") List<Keyword> keywords,@Param(value = "categories") List<Category> categories,@Param(value = "tags") List<Tag> tags);
+    List<Game> getGamesByKeyWords(@Param(value = "keywords") List<Keyword> keywords,@Param(value = "categories") List<Category> categories,@Param(value = "tags") List<Tag> tags,@Param(value = "excludeGameIds") List<Long> excludeGameIds);
 }

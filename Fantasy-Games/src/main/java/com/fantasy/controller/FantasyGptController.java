@@ -5,10 +5,9 @@ import com.fantasy.model.Result.Result;
 import com.fantasy.service.IFantasyGptService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 
 
 @RestController
@@ -25,10 +24,10 @@ public class FantasyGptController {
         return Result.ok("success",result);
     }
 
-    @GetMapping("/retry")
+    @PostMapping("/retry")
     @ApiOperation(value = "retry",notes = "1")
-    public Result retry(Long answerId,String question){
-        Answer result = fantasyGptService.retry(answerId, question);
+    public Result retry(Long answerId, String question, @RequestBody List<Answer> excludeAnswers){
+        Answer result = fantasyGptService.retry(answerId,excludeAnswers, question);
         return Result.ok("success",result);
     }
 

@@ -3,6 +3,7 @@ package com.fantasy.service;
 import com.fantasy.entity.Answer;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.fantasy.entity.Keyword;
+import com.fantasy.model.dto.AnswerDto;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ import java.util.List;
  */
 public interface IAnswerService extends IService<Answer> {
 
-    Answer getAnswerByQuestionId(Long id);
+    Answer getAnswerByQuestionId(Long id,List<Answer> excludeAnswers);
 
-    List<Answer> getAnswersByKeyWords(List<Keyword> keywords,Long answerId);
+    List<AnswerDto> getAnswersByKeyWords(List<Keyword> keywords, List<Answer> excludeAnswers);
 }

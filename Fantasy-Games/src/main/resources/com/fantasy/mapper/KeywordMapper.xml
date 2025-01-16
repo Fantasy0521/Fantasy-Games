@@ -16,8 +16,23 @@
         </foreach>
     </insert>
 
+    <delete id="deleteAnswerKeywords">
+        delete
+        from
+            answer_keyword
+        where
+            keyword_id = #{keywordId}
+    </delete>
+    <delete id="deleteQuestionKeywords">
+        delete
+        from
+            question_keyword
+        where
+            keyword_id = #{keywordId}
+    </delete>
+
     <select id="getNoKeyWords" resultType="com.fantasy.entity.Keyword">
-        select * from keyword where weight = -1
+        select * from keyword where weight &lt; 0
     </select>
 
 </mapper>

@@ -10,6 +10,7 @@ import com.fantasy.model.vo.GameInfo;
 import com.fantasy.service.ICategoryService;
 import com.fantasy.service.IGameService;
 import com.fantasy.service.ITagService;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -47,7 +48,7 @@ public class GameAdminController {
     @GetMapping("/games")
     @ApiOperation(value = "访问页面`",notes = "1")
     public Result getAllGames(@RequestParam(defaultValue = "1") Integer pageNum,@RequestParam(defaultValue = "5") Integer pageSize){
-        PageResult<GameInfo> allGamesByPage = gameService.getAllGamesByPage(pageNum,pageSize);
+        PageInfo<GameInfo> allGamesByPage = gameService.getAllGamesByPage(pageNum,pageSize);
         return Result.ok("获取所有游戏信息成功!",allGamesByPage);
     }
 

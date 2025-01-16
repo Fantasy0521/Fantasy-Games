@@ -2,24 +2,65 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fantasy.mapper.AnswerMapper">
 
-    <select id="getAnswersByKeyWords" resultType="com.fantasy.entity.Answer">
-        select a.*
+    <resultMap id="AnswerDtoResultMap" type="com.fantasy.model.dto.AnswerDto">
+        <id property="id" column="id" />
+        <result property="questionId" column="question_id"/>
+        <result property="content" column="content"/>
+        <result property="acceptanceCount" column="acceptance_count"/>
+        <result property="recommendScore" column="recommend_score"/>
+        <result property="finalScore" column="final_score"/>
+        <result property="gameId" column="game_id"/>
+        <result property="status" column="status"/>
+        <result property="isTongyi" column="is_tongyi"/>
+        <result property="createTime" column="create_time"/>
+        <collection property="keywords" ofType="com.fantasy.entity.Keyword">
+            <id property="id" column="keyword_id"/>
+        </collection>
+    </resultMap>
+
+    <select id="getAnswersByKeyWords" resultMap="AnswerDtoResultMap">
+        select a.*, ak.keyword_id
         from answer a
         left join answer_keyword ak
         on a.id = ak.answer_id
         where
+            a.status = 1
+            and
             a.acceptance_count > 0
             and
             a.recommend_score > 0
-            and
-            ak.keyword_id in
-            <foreach collection="keywords" item="item" open="(" separator="," close=")">
-                #{item.id}
-            </foreach>
-            <if test="answerId != null">
-                and a.id != #{answerId}
+            <if test="keywords != null">
+                and
+                ak.keyword_id in
+                <foreach collection="keywords" item="item" open="(" separator="," close=")">
+                    #{item.id}
+                </foreach>
+            </if>
+            <if test="excludeAnswers != null">
+                and a.id not in
+                <foreach collection="excludeAnswers" item="item" open="(" separator="," close=")">
+                    #{item.id}
+                </foreach>
+                and a.content not in
+                <foreach collection="excludeAnswers" item="item" open="(" separator="," close=")">
+                    #{item.content}
+                </foreach>
             </if>
         order by a.recommend_score desc
+    </select>
+
+    <select id="getAnswerByQuestionId" resultType="com.fantasy.entity.Answer">
+        select * from answer
+        where question_id = #{id}
+        and status = 1
+        and acceptance_count > 0
+        <if test="excludeAnswers != null">
+            and id not in
+            <foreach collection="excludeAnswers" item="item" open="(" separator="," close=")">
+                #{item.id}
+            </foreach>
+        </if>
+        order by recommend_score desc
     </select>
 
 </mapper>

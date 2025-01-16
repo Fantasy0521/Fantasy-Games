@@ -141,8 +141,8 @@
 				getDataByQuery(this.queryInfo).then(res => {
 					if (res.code === 200) {
 						this.blogList = res.data.list
-						this.categoryList = res.data.categories
-						this.total = res.data.blogs.total
+						// this.categoryList = res.data.categories
+						this.total = res.data.total
 					}
 				})
 			},

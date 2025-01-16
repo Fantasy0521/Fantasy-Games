@@ -3,6 +3,7 @@ package com.fantasy.mapper;
 import com.fantasy.entity.Answer;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.fantasy.entity.Keyword;
+import com.fantasy.model.dto.AnswerDto;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -18,6 +19,8 @@ import java.util.List;
 @Mapper
 public interface AnswerMapper extends BaseMapper<Answer> {
 
-    List<Answer> getAnswersByKeyWords(List<Keyword> keywords,Long answerId);
+    List<AnswerDto> getAnswersByKeyWords(List<Keyword> keywords, List<Answer> excludeAnswers);
+
+    List<Answer> getAnswerByQuestionId(Long id, List<Answer> excludeAnswers);
 
 }

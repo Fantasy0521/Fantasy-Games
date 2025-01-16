@@ -46,6 +46,16 @@ public class Answer implements Serializable {
     private Double finalScore;
 
     /**
+     * 游戏库中游戏id
+     */
+    private Long gameId;
+
+    /**
+     * 状态
+     */
+    private Boolean status;
+
+    /**
      * 是否通义生成
      */
     private Boolean isTongyi;

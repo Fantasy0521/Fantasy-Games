@@ -467,13 +467,17 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements IB
         }
         PageHelper.startPage(pageNum, pageSize);
         List<Blog> list = this.list(queryWrapper);
+        PageInfo<Blog> blogPageInfo = new PageInfo<>(list);
         List<BlogDto> blogDtos = new ArrayList<>();
         //需要返回Dto对象
         for (Blog blog : list) {
             BlogDto blogDto = blogToBlogDto(blog);
             blogDtos.add(blogDto);
         }
-        return new PageInfo<>(blogDtos);
+        PageInfo<BlogDto> blogDtoPageInfo = new PageInfo<>(blogDtos);
+        blogDtoPageInfo.setPages(blogPageInfo.getPages());
+        blogDtoPageInfo.setTotal(blogPageInfo.getTotal());
+        return blogDtoPageInfo;
     }
 
     @Override

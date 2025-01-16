@@ -24,4 +24,7 @@ public interface KeywordMapper extends BaseMapper<Keyword> {
 
     List<Keyword> getNoKeyWords();
 
+    void deleteAnswerKeywords(Long id);
+
+    void deleteQuestionKeywords(Long id);
 }

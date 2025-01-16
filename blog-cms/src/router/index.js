@@ -168,13 +168,31 @@ const routes = [
 		name: 'System',
 		redirect: '/system/job',
 		component: Layout,
-		meta: {title: '系统管理', icon: 'el-icon-s-tools'},
+		meta: {title: 'Gpt管理', icon: 'el-icon-s-tools'},
 		children: [
+			// {
+			// 	path: 'job',
+			// 	name: 'JobList',
+			// 	component: () => import('@/views/system/ScheduleJobList'),
+			// 	meta: {title: '定时任务', icon: 'el-icon-alarm-clock'}
+			// },
 			{
-				path: 'job',
-				name: 'JobList',
-				component: () => import('@/views/system/ScheduleJobList'),
-				meta: {title: '定时任务', icon: 'el-icon-alarm-clock'}
+				path: 'keyword',
+				name: 'keywordList',
+				component: () => import('@/views/system/KeywordList'),
+				meta: {title: '关键词管理', icon: 'el-icon-key'}
+			},
+			{
+				path: 'question',
+				name: 'questionList',
+				component: () => import('@/views/system/KeywordList'),
+				meta: {title: '问答管理', icon: 'el-icon-chat-line-square'}
+			},
+			{
+				path: 'calculate',
+				name: 'calculateConf',
+				component: () => import('@/views/system/KeywordList'),
+				meta: {title: '算法优化', icon: 'el-icon-cpu'}
 			},
 		]
 	},
@@ -185,12 +203,12 @@ const routes = [
 		component: Layout,
 		meta: {title: '日志管理', icon: 'el-icon-document'},
 		children: [
-			{
-				path: 'job',
-				name: 'JobLog',
-				component: () => import('@/views/log/ScheduleJobLog'),
-				meta: {title: '任务日志', icon: 'el-icon-alarm-clock'}
-			},
+			// {
+			// 	path: 'job',
+			// 	name: 'JobLog',
+			// 	component: () => import('@/views/log/ScheduleJobLog'),
+			// 	meta: {title: '任务日志', icon: 'el-icon-alarm-clock'}
+			// },
 			// {
 			// 	path: 'login',
 			// 	name: 'LoginLog',

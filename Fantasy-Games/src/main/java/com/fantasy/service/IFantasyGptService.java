@@ -2,10 +2,12 @@ package com.fantasy.service;
 
 import com.fantasy.entity.Answer;
 
-public interface IFantasyGptService {
-    Answer questAI(String question,Long answerId);
+import java.util.List;
 
-    Answer retry(Long answerId,String question);
+public interface IFantasyGptService {
+    Answer questAI(String question,List<Answer> excludeAnswers);
+
+    Answer retry(Long answerId,List<Answer> excludeAnswers, String question);
 
     void pick(Long answerId);
 }
