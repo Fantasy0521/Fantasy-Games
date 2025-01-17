@@ -2,4 +2,49 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fantasy.mapper.QuestionMapper">
 
+    <resultMap id="QuestionVoResultMap" type="com.fantasy.model.vo.QuestionVo">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="content" property="content" />
+        <result column="quest_count" property="questCount" />
+        <result column="create_time" property="createTime" />
+        <association property="answer" javaType="com.fantasy.entity.Answer">
+            <id column="answer_id" property="id" />
+            <result column="answer_content" property="content" />
+            <result column="game_id" property="gameId"/>
+            <result column="acceptance_count" property="acceptanceCount" />
+            <result column="recommend_score" property="recommendScore" />
+            <result column="final_score" property="finalScore" />
+            <result column="status" property="status" />
+            <result column="is_tongyi" property="isTongyi" />
+            <result column="create_time" property="createTime" />
+        </association>
+        <collection property="keywords" ofType="com.fantasy.entity.Keyword">
+            <id column="keyword_id" property="id" />
+            <result column="keyword_content" property="content"/>
+        </collection>
+    </resultMap>
+
+    <select id="getQuestionInfoList" resultMap="QuestionVoResultMap">
+        SELECT
+            q.*, a.id answer_id,
+            a.content answer_content,
+            a.game_id game_id,
+            a.acceptance_count acceptance_count,
+            a.recommend_score recommend_score,
+            a.final_score final_score,
+            a.status status,
+            a.is_tongyi is_tongyi,
+            a.create_time create_time,
+            k.id keyword_id,
+            k.content keyword_content
+        FROM
+            question q
+        LEFT JOIN answer a ON q.id = a.question_id
+        LEFT JOIN question_keyword qk ON q.id = qk.question_id
+        LEFT JOIN keyword k ON k.id = qk.keyword_id
+        order by
+            q.quest_count desc,q.create_time desc
+    </select>
+
 </mapper>

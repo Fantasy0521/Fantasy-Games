@@ -185,13 +185,13 @@ const routes = [
 			{
 				path: 'question',
 				name: 'questionList',
-				component: () => import('@/views/system/KeywordList'),
+				component: () => import('@/views/system/QuestionList'),
 				meta: {title: '问答管理', icon: 'el-icon-chat-line-square'}
 			},
 			{
 				path: 'calculate',
 				name: 'calculateConf',
-				component: () => import('@/views/system/KeywordList'),
+				component: () => import('@/views/system/CalculateList'),
 				meta: {title: '算法优化', icon: 'el-icon-cpu'}
 			},
 		]

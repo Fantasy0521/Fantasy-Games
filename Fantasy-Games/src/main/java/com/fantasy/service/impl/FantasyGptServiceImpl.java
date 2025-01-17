@@ -129,6 +129,10 @@ public class FantasyGptServiceImpl implements IFantasyGptService {
         if (result == null) {
             //5 如果在游戏库中未找到符合用户关键词的游戏，此时直接调用通义api生成回答，回答和关键词存入数据库
             result = tongYiUtil.questAI(question);
+            //如果result长度大于200，只取前200字
+            if (result.length() > 200) {
+                result = result.substring(0, 200);
+            }
             //设置默认的推荐分值和最终分值
             answer = initAnswer(result,true,null);
         }

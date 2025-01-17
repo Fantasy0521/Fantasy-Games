@@ -271,7 +271,7 @@ public class TFIDFUtil {
      * @return 缓存中的关键词的权重
      */
     public static Double getKeyWordWeight(String content) {
-        return wordTFIDFAll.get(content);
+        return wordTFIDFAll.getOrDefault(content, 0d);
     }
 
     /**

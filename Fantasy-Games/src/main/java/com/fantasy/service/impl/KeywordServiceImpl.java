@@ -163,14 +163,18 @@ public class KeywordServiceImpl extends ServiceImpl<KeywordMapper, Keyword> impl
                     //关键词出现次数加1
                     keyword.setKeywordCount(keyword.getKeywordCount() + count);
                     //从TF-IDF算法缓存数据中取权重
-                    Double keyWordWeight = TFIDFUtil.getKeyWordWeight(keyword.getContent());
-                    if (keyWordWeight != null){
-                        //设为最新的权重
-                        keyword.setWeight(keyWordWeight);
-                    }
+                    //设为最新的权重
+                    keyword.setWeight(TFIDFUtil.getKeyWordWeight(keyword.getContent()));
                     keywords.add(keyword);
                 }else {
                     //数据库中权重=0(未被确认的关键词),这种先去掉不管
+                    //count + 1 -> count = 5 wight +
+                    int keywordCount = keyword.getKeywordCount() + count;
+                    keyword.setKeywordCount(keywordCount);
+                    if (keywordCount >= 5){
+                        keyword.setWeight(TFIDFUtil.getKeyWordWeight(keyword.getContent()));
+                    }
+                    updateById(keyword);
                 }
             }else {//新词(不一定为关键词)
                 Keyword keyword1 = new Keyword();

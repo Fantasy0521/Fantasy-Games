@@ -37,7 +37,7 @@
 				<i class="users icon"></i>友人帐
 			</router-link>
 			<router-link to="/about" class="item" :class="{'m-mobile-hide': mobileHide,'active':$route.name==='about'}">
-				<i class="info icon"></i>关于我
+				<i class="info icon"></i>资源求助
 			</router-link>
 			<el-autocomplete v-model="queryString" :fetch-suggestions="debounceQuery" placeholder="Search..."
 			                 class="right item m-search" :class="{'m-mobile-hide': mobileHide}"
