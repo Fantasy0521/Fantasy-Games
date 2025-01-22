@@ -15,7 +15,7 @@
 
 		<el-table :data="blogList">
 			<el-table-column label="序号" type="index" width="50"></el-table-column>
-			<el-table-column label="游戏名" prop="name" show-overflow-tooltip></el-table-column>
+			<el-table-column label="游戏名" prop="name" show-overflow-tooltip width="150"></el-table-column>
 			<el-table-column label="分类" prop="category.name" width="150"></el-table-column>
       <el-table-column label="游戏封面" width="80">
         <template v-slot="scope">
@@ -27,22 +27,22 @@
       <el-table-column label="发行日期" width="170">
         <template v-slot="scope">{{ scope.row.publishDate | dateFormat }}</template>
       </el-table-column>
-      <el-table-column label="购买链接" prop="officialUrl" width="150"></el-table-column>
-      <el-table-column label="下载链接" prop="downloadUrl" width="150"></el-table-column>
+      <el-table-column label="浏览量" prop="views" width="100"></el-table-column>
+      <el-table-column label="收藏量" prop="stars" width="100"></el-table-column>
 			<el-table-column label="置顶" width="80">
 				<template v-slot="scope">
-					<el-switch v-model="scope.row.top" @change="blogTopChanged(scope.row)"></el-switch>
+					<el-switch v-model="scope.row.isTop" @change="blogTopChanged(scope.row)"></el-switch>
 				</template>
 			</el-table-column>
 			<el-table-column label="推荐" width="80">
 				<template v-slot="scope">
-					<el-switch v-model="scope.row.recommend" @change="blogRecommendChanged(scope.row)"></el-switch>
+					<el-switch v-model="scope.row.isRecommend" @change="blogRecommendChanged(scope.row)"></el-switch>
 				</template>
 			</el-table-column>
 			<el-table-column label="可见性" width="100">
 				<template v-slot="scope">
 					<el-link icon="el-icon-edit" :underline="false" @click="editGameVisibility(scope.row)">
-						{{ scope.row.published ? (scope.row.password !== '' ? '密码保护' : '公开') : '私密' }}
+						{{ scope.row.isPublished ? ((scope.row.password !== '' && scope.row.password) ? '密码保护' : '公开') : '私密' }}
 					</el-link>
 				</template>
 			</el-table-column>
@@ -171,7 +171,7 @@
       },
 			//切换博客置顶状态
 			blogTopChanged(row) {
-				updateTop(row.id, row.top).then(res => {
+				updateTop(row.id, row.isTop).then(res => {
 					if (res.code === 200) {
 						this.msgSuccess(res.msg);
 					}
@@ -179,7 +179,7 @@
 			},
 			//切换博客推荐状态
 			blogRecommendChanged(row) {
-				updateRecommend(row.id, row.recommend).then(res => {
+				updateRecommend(row.id, row.isRecommend).then(res => {
 					if (res.code === 200) {
 						this.msgSuccess(res.msg);
 					}
@@ -188,15 +188,15 @@
 			//编辑博客可见性
 			editGameVisibility(row) {
 				this.visForm = {
-					appreciation: row.appreciation,
-					recommend: row.recommend,
-					commentEnabled: row.commentEnabled,
-					top: row.top,
-					published: row.published,
+					appreciation: row.isAppreciation,
+					recommend: row.isRecommend,
+					commentEnabled: row.isCommentEnabled,
+					top: row.isTop,
+					published: row.isPublished,
 					password: row.password,
 				}
 				this.blogId = row.id
-				this.radio = this.visForm.published ? (this.visForm.password !== '' ? 3 : 1) : 2
+        this.radio = this.visForm.published ? ((this.visForm.password !== '' && this.visForm.password) ? 3 : 1) : 2
 				this.dialogVisible = true
 			},
 			//修改博客可见性

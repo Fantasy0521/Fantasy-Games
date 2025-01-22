@@ -17,7 +17,7 @@
       </div>
     </div>
     <div class="chat-gpt-right" v-if="currentChat !== null">
-      <div class="input-area-tit">Fantasy Gpt，我擅长推荐游戏哦
+      <div class="input-area-tit">智能游戏推荐助手，我擅长推荐游戏哦
       </div>
       <div class="chat-area">
         <div v-for="(message, index) in currentChat.messages" :key="index" class="message">
@@ -40,7 +40,7 @@
         </div>
       </div>
       <div class="input-area">
-        <el-input type="textarea" v-model="formData.inputMessage" placeholder="来说些什么吧"
+        <el-input type="textarea" v-model="formData.inputMessage" placeholder="来说些什么吧 例如：能给我推荐一款VR恐怖游戏吗？"
                   :disabled="isRobotReplying"></el-input>
         <el-button type="primary" @click="sendMessage(0)" :disabled="isRobotReplying">发送</el-button>
       </div>

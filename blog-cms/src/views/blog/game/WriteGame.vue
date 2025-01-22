@@ -55,10 +55,10 @@
           </el-form-item>
         </el-col>
         <el-col :span="12">
-          <el-form-item label="标签" prop="tags">
-            <el-select v-model="form.tags" placeholder="请选择标签（输入可添加新标签）" :allow-create="true"
+          <el-form-item label="标签" prop="tagList">
+            <el-select v-model="form.tagList" placeholder="请选择标签（输入可添加新标签）" :allow-create="true"
                        :filterable="true" :multiple="true" style="width: 100%;">
-              <el-option :label="item.name" :value="item.id" v-for="item in tags" :key="item.id"></el-option>
+              <el-option :label="item.name" :value="item.id" v-for="item in tagList" :key="item.id"></el-option>
             </el-select>
           </el-form-item>
         </el-col>
@@ -124,16 +124,16 @@
         <el-form-item v-if="radio!==2">
           <el-row>
             <el-col :span="6">
-              <el-switch v-model="form.appreciation" active-text="赞赏"></el-switch>
+              <el-switch v-model="form.isAppreciation" active-text="赞赏"></el-switch>
             </el-col>
             <el-col :span="6">
-              <el-switch v-model="form.recommend" active-text="推荐"></el-switch>
+              <el-switch v-model="form.isRecommend" active-text="推荐"></el-switch>
             </el-col>
             <el-col :span="6">
-              <el-switch v-model="form.commentEnabled" active-text="评论"></el-switch>
+              <el-switch v-model="form.isCommentEnabled" active-text="评论"></el-switch>
             </el-col>
             <el-col :span="6">
-              <el-switch v-model="form.top" active-text="置顶"></el-switch>
+              <el-switch v-model="form.isTop" active-text="置顶"></el-switch>
             </el-col>
           </el-row>
         </el-form-item>
@@ -169,10 +169,10 @@ export default {
   data() {
     return {
       categoryList: [],
-      tags: [],
+      tagList: [],
       dialogVisible: false,
       uploadDialogVisible: false,
-      radio: 1,
+      radio: 2,
       form: {
         name: '',
         developers: '',
@@ -186,22 +186,23 @@ export default {
         downloadUrl: '',
         cate: null,
         categoryId : null,
-        tags: [],
+        tagList: [],
         gameImages: [],
         views: 0,
         stars: 0,
-        appreciation: false,
+        appreciation: true,
         recommend: false,
-        commentEnabled: false,
+        commentEnabled: true,
         top: false,
-        published: false,
+        published: true,
+        isPublished: true,
         password: '',
       },
       formRules: {
         title: [{required: true, message: '请输入标题', trigger: 'change'}],
         firstPicture: [{required: true, message: '请输入首图链接', trigger: 'change'}],
         cate: [{required: true, message: '请选择分类', trigger: 'change'}],
-        tags: [{required: true, message: '请选择标签', trigger: 'change'}],
+        tagList: [{required: true, message: '请选择标签', trigger: 'change'}],
       },
       dialogImageUrl: ''
     }
@@ -238,7 +239,7 @@ export default {
       getCategoryAndTag().then(res => {
         if (res.code === 200) {
           this.categoryList = res.data.categories
-          this.tags = res.data.tags
+          this.tagList = res.data.tags
         }
       })
     },
@@ -247,12 +248,17 @@ export default {
         if (res.code === 200) {
           this.computeCategoryAndTag(res.data)
           this.form = res.data
-          this.radio = this.form.published ? (this.form.password !== '' ? 3 : 1) : 2
+          this.radio = this.form.isPublished ? ((this.form.password !== '' && this.form.password) ? 3 : 1) : 2
+          console.log(this.radio)
         }
       })
     },
     computeCategoryAndTag(blog) {
       blog.cate = blog.category.id
+      blog.tagList = []
+      blog.tags.forEach(item => {
+        blog.tagList.push(item.id)
+      })
     },
     submit() {
       if (this.radio === 3 && (this.form.password === '' || this.form.password === null)) {
@@ -260,15 +266,6 @@ export default {
       }
       this.$refs.formRef.validate(valid => {
         if (valid) {
-          let tags2 = [];
-          this.form.tags.forEach(item => {
-            this.tags.forEach(item2 => {
-              if (item === item2.id) {
-                tags2.push(item2)
-              }
-            })
-          })
-          this.form.tags = tags2
           this.form.categoryId = this.form.cate
           if (this.radio === 2) {
             this.form.appreciation = false
