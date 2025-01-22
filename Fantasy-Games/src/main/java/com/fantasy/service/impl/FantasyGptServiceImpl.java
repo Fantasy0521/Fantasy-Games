@@ -107,7 +107,7 @@ public class FantasyGptServiceImpl implements IFantasyGptService {
         //4 如果通过关键词也未找到已有回答，开始根据问题生成回答，从游戏库中找到符合用户关键词的游戏，通用语句+对应游戏 =》回答 。 回答和关键词存入数据库
         Answer answer = new Answer();
 
-        if (!words.isEmpty() && (excludeAnswers == null || excludeAnswers.size() < 3)){//被否定3次以上后就不再从游戏库中生成回答，直接调用通义api生成回答
+        if (!words.isEmpty() && (excludeAnswers == null || excludeAnswers.size() < 2)){//被否定2次以上后就不再从游戏库中生成回答，直接调用通义api生成回答
             //检查关键词中的游戏类型，如果存在则添加分类过滤条件
             List<Category> categories = categoryService.getCateGoryByKeyWords(words);
             //检查关键词中的游戏标签，如果存在则添加标签过滤条件

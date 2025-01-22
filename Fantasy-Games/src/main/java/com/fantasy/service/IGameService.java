@@ -23,7 +23,7 @@ public interface IGameService extends IService<Game> {
 
     PageResult<Game> getGameInfoListByCategoryNameAndIsPublished(String categoryName,String keyword, Integer pageNum,Integer pageSize);
 
-    PageInfo<GameInfo> getAllGamesByPage(Integer pageNum, Integer pageSize);
+    PageInfo<GameInfo> getAllGamesByPage(Integer pageNum, Integer pageSize,Long categoryId,String title);
 
     GameInfo getGameById(Long id);
 

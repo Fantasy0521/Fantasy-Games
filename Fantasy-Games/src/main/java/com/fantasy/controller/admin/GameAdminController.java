@@ -47,8 +47,9 @@ public class GameAdminController {
      */
     @GetMapping("/games")
     @ApiOperation(value = "访问页面`",notes = "1")
-    public Result getAllGames(@RequestParam(defaultValue = "1") Integer pageNum,@RequestParam(defaultValue = "5") Integer pageSize){
-        PageInfo<GameInfo> allGamesByPage = gameService.getAllGamesByPage(pageNum,pageSize);
+    public Result getAllGames(@RequestParam(defaultValue = "1") Integer pageNum,@RequestParam(defaultValue = "5") Integer pageSize,
+                              @RequestParam(required = false) Long categoryId,@RequestParam(required = false) String title){
+        PageInfo<GameInfo> allGamesByPage = gameService.getAllGamesByPage(pageNum,pageSize,categoryId,title);
         return Result.ok("获取所有游戏信息成功!",allGamesByPage);
     }
 

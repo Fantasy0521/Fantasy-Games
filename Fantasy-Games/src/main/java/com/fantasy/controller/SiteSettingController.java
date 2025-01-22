@@ -53,15 +53,20 @@ public class SiteSettingController {
         Map<String, Object> map = siteSettingService.getSiteInfo();
         //2 获取最新博客作为推荐
         PageResult<BlogInfo> blogsByPage = blogService.getAllBlogsByPage(1);
-        List<BlogInfo> newBlogList = blogsByPage.getList();
+        List<BlogInfo> list = blogsByPage.getList();
         //3 获取分类列表以及标签云
         List<Category> categoryList = categoryService.list();
         List<Tag> tagList = tagService.list();
-        //4 TODO 获取随机博客,这里就先使用最新博客了
-        map.put("newBlogList", newBlogList);
+        map.put("newBlogList", list);
         map.put("categoryList", categoryList);
         map.put("tagList", tagList);
-        map.put("randomBlogList", newBlogList);
+        //4 获取随机博客
+        //如果list>10，只取前10个
+        if (list.size() > 10) {
+            list = list.subList(0, 10);
+        }
+        List<BlogInfo> randomBlogList = list;
+        map.put("randomBlogList", randomBlogList);
         return Result.ok("请求成功",map);
     }
 

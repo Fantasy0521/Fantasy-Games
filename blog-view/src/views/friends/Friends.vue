@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="ui top attached segment" style="text-align: center">
-			<h2 class="m-text-500">小伙伴们</h2>
+			<h2 class="m-text-500">讨论区</h2>
 		</div>
 		<div class="ui attached segment">
 			<div class="ui link three doubling cards">

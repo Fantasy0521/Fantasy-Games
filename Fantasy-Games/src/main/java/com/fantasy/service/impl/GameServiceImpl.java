@@ -84,10 +84,17 @@ public class GameServiceImpl extends ServiceImpl<GameMapper, Game> implements IG
     }
 
     @Override
-    public PageInfo<GameInfo> getAllGamesByPage(Integer pageNum, Integer pageSize) {
+    public PageInfo<GameInfo> getAllGamesByPage(Integer pageNum, Integer pageSize,Long categoryId,String title) {
         //1 构建分页对象
         PageHelper.startPage(pageNum, pageSize, "is_top desc, views desc, stars desc, create_time desc");
-        List<Game> list = list();
+        LambdaQueryWrapper<Game> queryWrapper = new LambdaQueryWrapper<>();
+        if (categoryId != null) {
+            queryWrapper.eq(Game::getCategoryId, categoryId);
+        }
+        if (!StringUtils.isEmpty(title)) {
+            queryWrapper.like(Game::getName, title);
+        }
+        List<Game> list = list(queryWrapper);
         PageInfo<Game> gamePageInfo = new PageInfo<>(list);
         //对GameInfo进行处理
         List<GameInfo> gameInfos = gameListToGameInfoList(list);

@@ -28,13 +28,13 @@
 				<i class="clone icon"></i>归档
 			</router-link>
 			<router-link to="/moments" class="item" :class="{'m-mobile-hide': mobileHide,'active':$route.name==='moments'}">
-				<i class="comment alternate outline icon"></i>动态
+				<i class="comment alternate outline icon"></i>游戏动态
 			</router-link>
 			<router-link to="/gpt" class="item" :class="{'m-mobile-hide': mobileHide,'active':$route.name==='gpt'}">
 				<i class="comment alternate outline icon"></i>Fantasy Gpt
 			</router-link>
 			<router-link to="/friends" class="item" :class="{'m-mobile-hide': mobileHide,'active':$route.name==='friends'}">
-				<i class="users icon"></i>友人帐
+				<i class="users icon"></i>游戏讨论区
 			</router-link>
 			<router-link to="/about" class="item" :class="{'m-mobile-hide': mobileHide,'active':$route.name==='about'}">
 				<i class="info icon"></i>资源求助

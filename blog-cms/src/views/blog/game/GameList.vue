@@ -105,6 +105,7 @@
 <script>
 	import Breadcrumb from "@/components/Breadcrumb";
 	import {getDataByQuery, deleteGameById, updateTop, updateRecommend, updateVisibility} from '@/api/game'
+	import {getData} from '@/api/category'
 
 	export default {
 		name: "GameList",
@@ -135,6 +136,7 @@
 		},
 		created() {
 			this.getData()
+      this.getCategoryData()
 		},
 		methods: {
 			getData() {
@@ -143,6 +145,19 @@
 						this.blogList = res.data.list
 						// this.categoryList = res.data.categories
 						this.total = res.data.total
+					}
+				})
+			},
+			getCategoryData() {
+        let queryInfo = {
+          pageNum: 1,
+          pageSize: 100
+        }
+        getData(queryInfo).then(res => {
+					if (res.code === 200) {
+						// this.blogList = res.data.list
+						this.categoryList = res.data.list
+						// this.total = res.data.total
 					}
 				})
 			},

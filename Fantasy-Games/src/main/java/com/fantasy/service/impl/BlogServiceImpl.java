@@ -88,7 +88,7 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements IB
         LambdaQueryWrapper<Blog> queryWrapper = new LambdaQueryWrapper<>();
 
         //3 添加排序条件 is_top desc, create_time desc
-        queryWrapper.orderByDesc(Blog::getIsTop, Blog::getCreateTime);
+        queryWrapper.orderByDesc(Blog::getIsTop,Blog::getIsRecommend,Blog::getViews,Blog::getCreateTime);
 
         //4 开始分页查询
         Page<Blog> blogPage = this.page(pageInfo, queryWrapper);
@@ -358,9 +358,6 @@ public class BlogServiceImpl extends ServiceImpl<BlogMapper, Blog> implements IB
         blog.setUserId(1L);//个人博客默认只有一个作者
         blogDtoToBlog(blog);
         blog.setTags(tags);
-        // 图片上传处理
-        String content = blog.getContent();
-        blog.setContent(imageUploadHandler(content));
         if ("save".equals(type)) {
             blog.setCreateTime(LocalDateTime.now());
             this.save(blog);
