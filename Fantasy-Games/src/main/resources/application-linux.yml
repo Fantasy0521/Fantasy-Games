@@ -3,33 +3,29 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://106.14.45.117:3306/fantasy-games?useUnicode=true&zeroDateTimeBehavior=convertToNull&characterEncoding=utf-8&useSSL=false
+    url: jdbc:mysql://101.34.137.166:3306/fantasy-games?useUnicode=true&zeroDateTimeBehavior=convertToNull&characterEncoding=utf-8&useSSL=false
     username: root
     password:
 
 # 静态文件上传访问路径 Linux环境如 :/home/My Blog/upload
 upload:
-  path: /usr/local/java/fantasy-blog/upload
+  path: /usr/local/java/fantasy-games/upload
   access:
     path: /images/**
   resources:
     locations: file:${upload.path}
 
-download: # 文件下载地址
-  #  url: http://127.0.0.1:8091/mhs/article/download?name=
-  url: http://106.14.45.117:8090/admin/download?name=
-
-linuxImg: # linux 下的图片存放路径
-  url: /usr/local/java/fantasy-blog/upload/
-
 fileUpload:
-  uploadUrl: http://106.14.45.117:8055/common/upload
-  downloadUrl: http://106.14.45.117:8055/common/download?name=
+  # linux 下的图片存放路径
+  dir: /usr/local/java/fantasy-games/upload/
+  # 文件上传地址
+  uploadUrl: http://101.34.137.166:8055/common/upload
+  downloadUrl: http://101.34.137.166:8055/common/download?name=
 
 # 通义api配置
 tongyi:
   # https://dashscope.console.aliyun.com/apiKey 前往这里获取apiKey进行替换
-  apiKey: 1
+  apiKey: sk-
   # 模型名称 测试下来速度较快的: qwen-turbo  免费且较快的 qwen2.5-coder-3b-instruct
   model: qwen2.5-coder-3b-instruct
   # 角色 这里可以指定模型的角色 默认 You are a helpful assistant.

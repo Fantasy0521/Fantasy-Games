@@ -109,7 +109,7 @@
   import log from "echarts/src/scale/Log";
   export function getimgurl(formdata) {
     return axios({
-      url : 'http://106.14.45.117:8055/common/upload/upload',
+      url : 'http://101.34.137.166:8055/common/upload/upload',
       method : 'POST',
       data : formdata,
       headers : {'Content-Type' : 'multipart/form-data'},

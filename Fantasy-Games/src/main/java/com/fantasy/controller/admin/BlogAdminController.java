@@ -46,7 +46,7 @@ public class BlogAdminController {
     @Autowired
     private ITagService tagService;
 
-    @Value("${linuxImg.url}")
+    @Value("${fileUpload.dir}")
     private String url;
 
     //写文章 http://localhost:8090/admin/blog

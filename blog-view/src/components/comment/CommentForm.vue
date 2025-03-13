@@ -72,7 +72,7 @@
         <el-button type="primary" size="medium" v-throttle="[postForm,`click`,3000]">发表评论</el-button>
 <!--        <el-button style="margin-left: 10px;" type="success" size="small" @click="submitComment">发表评论</el-button>-->
 <!--        <el-upload-->
-<!--            action="http://106.14.45.117:8055/common/upload/upload"-->
+<!--            action="http://101.34.137.166:8055/common/upload/upload"-->
 <!--            :on-preview="handlePreview"-->
 <!--            :on-remove="handleRemove"-->
 <!--            :before-upload="beforeUpload"-->

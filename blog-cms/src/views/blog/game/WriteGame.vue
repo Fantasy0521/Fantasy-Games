@@ -26,7 +26,7 @@
         <el-col :span="20">
           <el-form-item label="游戏图片" prop="gameImages">
             <el-upload
-                action="http://106.14.45.117:8055/common/upload/upload"
+                action="http://101.34.137.166:8055/common/upload/upload"
                 list-type="picture-card"
                 drag
                 :on-preview="handlePictureCardPreview"
@@ -155,7 +155,7 @@ import log from "echarts/src/scale/Log";
 
 export function getimgurl(formdata) {
   return axios({
-    url: 'http:///106.14.45.117:8090/admin/upload',
+    url: 'http:///101.34.137.166:8090/admin/upload',
     method: 'POST',
     data: formdata,
     headers: {'Content-Type': 'multipart/form-data'},
@@ -226,7 +226,7 @@ export default {
       let image = {
         name: response.data,
         rn: this.form.gameImages.length + 1,
-        url: 'http://106.14.45.117:8055/common/upload/download?name='+response.data
+        url: 'http://101.34.137.166:8055/common/upload/download?name='+response.data
       }
       this.form.gameImages.push(image)
       console.log(file, fileList);

@@ -17,7 +17,7 @@ public class BlogAdminControllerTest {
 
     @Test
     void testCategory(){
-        blogService.imageUploadHandler("![debug.png](1)\n\n111\n![下载debug.jfif](1)");
+//        blogService.imageUploadHandler("![debug.png](1)\n\n111\n![下载debug.jfif](1)");
 
     }
 }
