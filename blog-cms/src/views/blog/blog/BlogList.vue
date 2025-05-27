@@ -56,7 +56,7 @@
 		</el-pagination>
 
 		<!--编辑可见性状态对话框-->
-		<el-dialog title="博客可见性" width="30%" :visible.sync="dialogVisible">
+		<el-dialog title="可见性" width="30%" :visible.sync="dialogVisible">
 			<!--内容主体-->
 			<el-form label-width="50px" @submit.native.prevent>
 				<el-form-item>
@@ -144,7 +144,7 @@
 				this.queryInfo.pageSize = 10
 				this.getData()
 			},
-			//切换博客置顶状态
+			//切换帖子置顶状态
 			blogTopChanged(row) {
 				updateTop(row.id, row.top).then(res => {
 					if (res.code === 200) {
@@ -152,7 +152,7 @@
 					}
 				})
 			},
-			//切换博客推荐状态
+			//切换帖子推荐状态
 			blogRecommendChanged(row) {
 				updateRecommend(row.id, row.recommend).then(res => {
 					if (res.code === 200) {
@@ -160,7 +160,7 @@
 					}
 				})
 			},
-			//编辑博客可见性
+			//编辑可见性
 			editBlogVisibility(row) {
 				this.visForm = {
 					appreciation: row.appreciation,
@@ -174,7 +174,7 @@
 				this.radio = this.visForm.published ? (this.visForm.password !== '' ? 3 : 1) : 2
 				this.dialogVisible = true
 			},
-			//修改博客可见性
+			//修改可见性
 			saveVisibility() {
 				if (this.radio === 3 && (this.visForm.password === '' || this.visForm.password === null)) {
 					return this.msgError("密码保护模式必须填写密码！")
@@ -213,7 +213,7 @@
 				this.$router.push(`/blog/edit/${id}`)
 			},
 			deleteBlogById(id) {
-				this.$confirm('此操作将永久删除该博客<strong style="color: red">及其所有评论</strong>，是否删除?<br>建议将博客置为<strong style="color: red">私密</strong>状态！', '提示', {
+				this.$confirm('此操作将永久删除该帖子<strong style="color: red">及其所有评论</strong>，是否删除?<br>建议将帖子置为<strong style="color: red">私密</strong>状态！', '提示', {
 					confirmButtonText: '确定',
 					cancelButtonText: '取消',
 					type: 'warning',

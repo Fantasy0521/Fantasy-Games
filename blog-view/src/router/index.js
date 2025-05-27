@@ -59,7 +59,7 @@ const routes = [
 				name: 'blog',
 				component: Blog,
 				meta: {
-					title: '博客'
+					title: '帖子'
 				}
 			},
 			{

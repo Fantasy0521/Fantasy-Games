@@ -108,7 +108,7 @@
     </el-form>
 
     <!--编辑可见性状态对话框-->
-    <el-dialog title="博客可见性" width="30%" :visible.sync="dialogVisible">
+    <el-dialog title="可见性" width="30%" :visible.sync="dialogVisible">
       <!--内容主体-->
       <el-form label-width="50px" @submit.native.prevent>
         <el-form-item>

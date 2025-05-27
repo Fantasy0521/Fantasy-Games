@@ -13,7 +13,7 @@
 				</div>
 
 				<div class="six wide column">
-					<h4 class="ui inverted header m-text-thin m-text-spaced">最新博客</h4>
+					<h4 class="ui inverted header m-text-thin m-text-spaced">最新游戏</h4>
 					<div class="ui inverted link list">
 						<a href="javascript:;" @click.prevent="toBlog(item)" v-for="item in newBlogList" :key="item.id" class="item m-text-thin m-padded-tb-small">{{ item.title }}</a>
 					</div>

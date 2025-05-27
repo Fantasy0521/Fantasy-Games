@@ -1,8 +1,8 @@
 {
   "name": "blog-view",
   "version": "1.0.0",
-  "description": "NBlog view",
-  "author": "Naccl <i@naccl.top>",
+  "description": "Fantasy Games view",
+  "author": "Fntasy0521",
   "private": true,
   "scripts": {
     "serve": "set NODE_OPTIONS=--openssl-legacy-provider && vue-cli-service serve",
