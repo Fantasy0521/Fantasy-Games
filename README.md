@@ -4,7 +4,24 @@
 
 ## 简介
 
-基于springboot的智能游戏资源系统
+基于springboot的智能游戏资源系统,自研发FantasyGpt智能游戏推荐助手，使用TF—IDF逆文档频率算法进行游戏检索与推荐，对检索算法进行优化
+
+首页
+
+![image-20250630164328519](README.assets/image-20250630164328519.png)
+
+游戏详情页
+
+![image-20250630164427206](README.assets/image-20250630164427206.png)
+
+智能游戏推荐助手
+
+![img](README.assets/企业微信截图_17375282039542.png)
+
+后台管理
+
+![image-20250630164605545](README.assets/image-20250630164605545.png)
+
 
  [Fantasy0521/Fantasy-Games: 基于springboot的智能游戏资源系统 (github.com)](https://github.com/Fantasy0521/Fantasy-Games)
 
@@ -24,8 +41,8 @@
 
 ## 快速开始
 
-1. 创建 MySQL 数据库`fantasy-blog`，并执行`/Fantasy-Blog/nblog.sql`初始化表数据
-2. 修改配置信息`Fantasy-Blog/src/main/resources/application.yml`
+1. 创建 MySQL 数据库`fantasy-games`，并执行`/Fantasy-Games/fantasy-games.sql`初始化表数据
+2. 修改配置信息`Fantasy-Games/src/main/resources/application.yml`
 3. 安装 Redis 并启动(暂不需要)
 4. 启动后端服务
 5. 分别在`blog-cms`和`blog-view`目录下执行`npm install`安装依赖

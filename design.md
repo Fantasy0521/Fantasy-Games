@@ -370,6 +370,16 @@ conn.close()
 
 1 开通服务
 
+```
+        <!-- https://mvnrepository.com/artifact/com.alibaba/dashscope-sdk-java -->
+        <!-- 通义api -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>dashscope-sdk-java</artifactId>
+            <version>2.17.1</version>
+        </dependency>
+```
+
 2 获取apiKey
 
 ```
@@ -385,6 +395,27 @@ setx DASHSCOPE_API_KEY "sk-xxx"
 #### 封装调用方法
 
 ```java
+
+
+import com.alibaba.dashscope.aigc.generation.Generation;
+import com.alibaba.dashscope.aigc.generation.GenerationParam;
+import com.alibaba.dashscope.aigc.generation.GenerationResult;
+import com.alibaba.dashscope.common.Message;
+import com.alibaba.dashscope.common.Role;
+import com.alibaba.dashscope.exception.ApiException;
+import com.alibaba.dashscope.exception.InputRequiredException;
+import com.alibaba.dashscope.exception.NoApiKeyException;
+import com.fantasy.model.bean.TongYiConf;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+import java.util.Arrays;
+
+/**
+ * @author: fantasy
+ * 通义语大模型调用工具
+ */
 @Component
 public class TongYiUtil {
 
@@ -425,6 +456,39 @@ public class TongYiUtil {
                 .build();
         return gen.call(param);
     }
+
+}
+
+```
+
+
+
+```yaml
+# 通义api配置
+tongyi:
+  # https://dashscope.console.aliyun.com/apiKey 前往这里获取apiKey进行替换
+  apiKey: sk-
+  # 模型名称 测试下来速度较快的: qwen-turbo  免费且较快的 qwen2.5-coder-3b-instruct
+  model: qwen2.5-coder-3b-instruct
+  # 角色 这里可以指定模型的角色 默认 You are a helpful assistant.
+  role: You are a game recommendation assistant.
+```
+
+```java
+package com.fantasy.model.bean;
+
+import lombok.Data;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
+
+@Data
+@Component
+@ConfigurationProperties(prefix = "tongyi")
+public class TongYiConf {
+
+    private String apiKey;
+    private String model;
+    private String role;
 
 }
 ```
