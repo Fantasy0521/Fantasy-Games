@@ -6,10 +6,10 @@
 <!--			<div class="bg1" style="background-image: url('https://cdn.jsdelivr.net/gh/Naccl/blog-resource/img/bg1.jpg');"></div>-->
 <!--			<div class="bg2" style="background-image: url('https://cdn.jsdelivr.net/gh/Naccl/blog-resource/img/bg2.jpg');"></div>-->
 <!--			<div class="bg3" style="background-image: url('https://cdn.jsdelivr.net/gh/Naccl/blog-resource/img/bg3.jpg');" v-show="loaded"></div>-->
-      <img ref="imgbg1" src="http://101.34.137.166:8055/common/upload/download?name=fd23a292-92cc-4642-be4d-294768d215971735524816721_IMG_20241230_101328.png&dir=很烦" style="display: none;">
-      <div class="bg1" style="background-image: url('http://101.34.137.166:8055/common/upload/download?name=fd23a292-92cc-4642-be4d-294768d215971735524816721_IMG_20241230_101328.png&dir=很烦');"></div>
-			<div class="bg2" style="background-image: url('http://101.34.137.166:8055/common/upload/download?name=3a2d0dcc-0d63-4f06-b5ba-a743fdde39d01735524428549_Image_240088055610494.png&dir=很烦');"></div>
-			<div class="bg3" style="background-image: url('http://101.34.137.166:8055/common/upload/download?name=4d108ec8-fc7c-4f2e-ade6-30f9a261b38a1735524427851_mmexport1735390638846.png&dir=%E5%BE%88%E7%83%A6');" v-show="loaded"></div>
+      <img ref="imgbg1" src="http://localhost:8055/common/upload/download?name=fd23a292-92cc-4642-be4d-294768d215971735524816721_IMG_20241230_101328.png&dir=很烦" style="display: none;">
+      <div class="bg1" style="background-image: url('http://localhost:8055/common/upload/download?name=fd23a292-92cc-4642-be4d-294768d215971735524816721_IMG_20241230_101328.png&dir=很烦');"></div>
+			<div class="bg2" style="background-image: url('http://localhost:8055/common/upload/download?name=3a2d0dcc-0d63-4f06-b5ba-a743fdde39d01735524428549_Image_240088055610494.png&dir=很烦');"></div>
+			<div class="bg3" style="background-image: url('http://localhost:8055/common/upload/download?name=4d108ec8-fc7c-4f2e-ade6-30f9a261b38a1735524427851_mmexport1735390638846.png&dir=%E5%BE%88%E7%83%A6');" v-show="loaded"></div>
 		</div>
     <!-- 首页标题 -->
 		<div class="text-malfunction" data-word="FantasyGames">

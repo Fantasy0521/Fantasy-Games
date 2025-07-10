@@ -3,7 +3,7 @@ import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 
 const request = axios.create({
-	baseURL: 'http://localhost:8299/',//此处修改服务器ip地址
+	baseURL: 'http://101.34.137.166:8299/',//此处修改服务器ip地址
 	timeout: 10000,
 })
 
