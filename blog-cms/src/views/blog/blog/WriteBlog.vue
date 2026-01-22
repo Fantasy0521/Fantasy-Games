@@ -14,13 +14,23 @@
 				</el-col>
 			</el-row>
 
-			<el-form-item label="帖子描述" prop="description">
-				<mavon-editor v-model="form.description"/>
-			</el-form-item>
+      <el-form-item label="帖子描述" prop="description">
+        <mavon-editor
+            ref="descriptionMavonEditor"
+            v-model="form.description"
+            @imgAdd="imgAddDescription"
+            @imgDrag="imgDragDescription"
+        />
+      </el-form-item>
 
-			<el-form-item label="帖子正文" prop="content">
-				<mavon-editor v-model="form.content" @imgAdd="imgAdd"/>
-			</el-form-item>
+      <el-form-item label="帖子正文" prop="content">
+        <mavon-editor
+            ref="contentMavonEditor"
+            v-model="form.content"
+            @imgAdd="imgAdd"
+            @imgDrag="imgDrag"
+        />
+      </el-form-item>
 
 			<el-row :gutter="20">
 				<el-col :span="12">
@@ -109,11 +119,11 @@
   import log from "echarts/src/scale/Log";
   export function getimgurl(formdata) {
     return axios({
-      url : 'http://101.34.137.166:8055/common/upload/upload',
-      method : 'POST',
-      data : formdata,
-      headers : {'Content-Type' : 'multipart/form-data'},
-      responseType : 'text'
+      url: "http://101.34.137.166:8055/common/upload/upload", //文件上传接口地址
+      method: "POST",
+      data: formdata,
+      headers: { "Content-Type": "multipart/form-data" },
+      responseType: "json"
     });
   }
 	export default {
@@ -121,6 +131,7 @@
 		components: {Breadcrumb},
 		data() {
 			return {
+        imgPrefix: 'http://101.34.137.166:8055/common/upload/download?name=',//文件下载接口前缀
 				categoryList: [],
 				tagList: [],
 				dialogVisible: false,
@@ -229,23 +240,40 @@
 				})
 			},
       // 上傳圖片script部分
+      // 正文编辑器 - 点击上传
       imgAdd(pos, file) {
-        //这里的pos指的是在数组中的下标
-        //这里创建FormData对象并将从本地获取到的file值存入。
+        this.handleImgUpload(pos, file, 'contentMavonEditor');
+      },
+      // 正文编辑器 - 拖拽上传
+      imgDrag(pos, file) {
+        this.handleImgUpload(pos, file, 'contentMavonEditor');
+      },
+
+      // 描述编辑器 - 点击上传
+      imgAddDescription(pos, file) {
+        this.handleImgUpload(pos, file, 'descriptionMavonEditor');
+      },
+      // 描述编辑器 - 拖拽上传
+      imgDragDescription(pos, file) {
+        this.handleImgUpload(pos, file, 'descriptionMavonEditor');
+      },
+
+      // 通用上传逻辑（接收编辑器ref参数）
+      handleImgUpload(pos, file, editorRef) {
         var formdata = new FormData();
         formdata.append("file", file);
 
         getimgurl(formdata)
             .then((response) => {
-              // 请求成功，获取后端返回的字符串数据
-              //   console.log("返回的字符串数据:", response);
+              const fileName = response.data.data;
+              const fullImgUrl = this.imgPrefix + fileName;
+              // 根据传入的ref标识，选择对应的编辑器实例
+              this.$refs[editorRef].$img2Url(pos, fullImgUrl);
             })
             .catch((error) => {
-              // 请求失败，处理错误
               console.error("上传失败:", error);
             });
-
-      }
+      },
 		}
 	}
 </script>
